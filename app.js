@@ -7,12 +7,23 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const compression = require('compression');
-
+const path = require('path');
 
 
 const app = express();
 
+const userRouter = require('./routes/userRoutes');
+
+if (process.env.NODE_ENV == 'development') {
+    app.use(morgan('dev'));
+}
+
+
 //Global Middlewares
+
+app.use(express.json());
+app.use('/public', express.static(path.join(__dirname, '../public')));
+
 
 app.use(cors());
 
@@ -36,11 +47,13 @@ app.use(xss());
 
 app.use(hpp());
 
+app.use(compression());
+
 app.use(express.static(`${__dirname}/public`));
 
-if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'));
-}
+//use the route as middlewares
+app.use('/api/v1/users', userRouter);
+
 
 
 app.all('*', (req, res) => {
