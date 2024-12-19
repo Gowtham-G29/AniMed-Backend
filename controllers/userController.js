@@ -132,7 +132,7 @@ exports.getUserDetails = async (req, res, next) => {
         const user = await User.findById(req.user._id);
         return res.status(200).json({
             status: 'Success',
-            message: 'User Details'.
+            message: 'User Details',
                 user
         })
 
