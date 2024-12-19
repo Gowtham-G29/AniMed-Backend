@@ -22,6 +22,11 @@ const userSchema = new mongoose.Schema({
         enum: ['user', 'veternarian'],
         default: 'user'
     },
+    photo:{
+        type: String, // URL of the profile picture
+        required: false,
+        default:'default.jpeg'
+    },
     password: {
         type: String,
         required: [true, 'Please Enter your Password'],
