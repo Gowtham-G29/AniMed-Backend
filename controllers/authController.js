@@ -280,39 +280,40 @@ exports.resetPassword = async (req, res, next) => {
 };
 
 
-exports.updateCurrentUserPassword=async(req,res,next)=>{
-    try{
-        const user=await User.findById(req.user._id).select('+password');
+exports.updateCurrentUserPassword = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user._id).select('+password');
+        
 
-        if(!await user.correctPassword(req.body.passwordCurrent,user.password)){
+        if (!await user.correctPassword(req.body.passwordCurrent, user.password)) {
             return res.status(401).json({
-                status:'fail',
-                message:'Incorrect current password'
-            })
+                status: 'fail',
+                message: 'Incorrect current password.'
+            });
         }
-        user.password=req.body.password;
-        user.passwordConfirm=req.body.passwordConfirm;
+        user.password = req.body.password;
+        user.passwordConfirm = req.body.passwordConfirm;
         await user.save();
 
-        const token=signToken(user._id);
-        const cookieOptions={
-            expires:new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES_IN*24*60*60*1000),
-            secure:true,
-            httpOnly:true
+        const token = signToken(user._id);
+        const cookieOptions = {
+            expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+            secure: true,
+            httpOnly: true
         }
-
-        res.cookie('jwt',token,cookieOptions);
+        res.cookie('jwt', token, cookieOptions);
         res.status(200).json({
-            status:'Success',
+            status: 'Success',
             token
         });
-    }catch(error){
+
+    } catch (error) {
         res.status(500).json({
-            status:'Fail',
-            message:error.message
-        })
+            status: 'Fail',
+            message: error.message
+        });
     }
-};
+}
 
 
 exports.clearCookieLogout=(req,res,next)=>{
