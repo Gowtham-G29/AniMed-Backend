@@ -23,7 +23,7 @@ exports.signUp = async (req, res, next) => {
         const token = signToken(newUser._id);
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-            secure: true,
+            secure: process.env.NODE_ENV === 'production',
             httpOnly: false,
             sameSite: 'none'
         }
@@ -83,7 +83,7 @@ exports.login = async (req, res, next) => {
         const token = signToken(user._id);
         cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-            secure: true,
+            secure: process.env.NODE_ENV === 'production',
             httpOnly: false
         }
 
@@ -147,7 +147,7 @@ exports.protect = async (req, res, next) => {
             });
         }
 
-      
+
         // Check if the user changed the password after the token was issued
         if (currentUser.passwordChangedAfter && currentUser.passwordChangedAfter(decoded.iat)) {
             return res.status(401).json({
@@ -251,8 +251,8 @@ exports.resetPassword = async (req, res, next) => {
         const token = signToken(user._id);
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-            secure: true,
-            httpOnly: true
+            secure: process.env.NODE_ENV === 'production',
+            httpOnly: false
         }
 
         res.cookie('jwt', token, cookieOptions);
@@ -288,9 +288,9 @@ exports.updateCurrentUserPassword = async (req, res, next) => {
         const token = signToken(user._id);
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-            secure: true,
-            httpOnly: true
-        }
+            secure: process.env.NODE_ENV === 'production',
+            httpOnly: false
+    }
         res.cookie('jwt', token, cookieOptions);
         res.status(200).json({
             status: 'Success',
@@ -335,7 +335,7 @@ exports.userDetailsRegister = async (req, res, next) => {
             expires: new Date(
                 Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
             ),
-            secure: true,
+            secure: process.env.NODE_ENV === 'production',
             httpOnly: false
         };
 
@@ -357,7 +357,7 @@ exports.userDetailsRegister = async (req, res, next) => {
 
 exports.vetDoctorDetailsRegister = async (req, res, next) => {
     try {
-          console.log(req.user);
+        console.log(req.user);
         if (!req.user) {
             return res.status(401).json({
                 status: 'fail',
@@ -373,7 +373,7 @@ exports.vetDoctorDetailsRegister = async (req, res, next) => {
             expires: new Date(
                 Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
             ),
-            secure: true,
+            secure: process.env.NODE_ENV === 'production',
             httpOnly: false
         };
 
