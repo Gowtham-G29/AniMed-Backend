@@ -17,8 +17,8 @@ const signToken = (id) => {
 exports.signUp = async (req, res, next) => {
     try {
         const newUser = await User.create(req.body);
-        const url = `${req.protocol}://${req.get('host')}/`;
-        await new Email(newUser, url).sendWelcome();
+        // const url = `${req.protocol}://${req.get('host')}/`;
+        // await new Email(newUser, url).sendWelcome();
 
         const token = signToken(newUser._id);
         const cookieOptions = {
