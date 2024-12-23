@@ -24,12 +24,15 @@ exports.signUp = async (req, res, next) => {
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
             httpOnly: true,
-            secure: false,  // Only true for production with HTTPS
-            sameSite: 'None',  // Use 'None' if cross-origin
+            secure: process.env.NODE_ENV === 'production',  // true if in production
+            sameSite: 'None', // Required for cross-origin cookies
             path: '/',
         };
 
+        // Clear old cookie before setting a new one
         res.clearCookie('jwt', { path: '/' });
+
+        // Set the new cookie
         res.cookie('jwt', token, cookieOptions);
 
         res.status(201).json({
@@ -45,6 +48,7 @@ exports.signUp = async (req, res, next) => {
         });
     }
 };
+
 
 
 exports.login = async (req, res, next) => {
