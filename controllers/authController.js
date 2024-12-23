@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const Email = require('../utils/email');
 const path = require('path');
 const animalOwner = require('../models/animalOwnerModel');
+const VetDoctor = require('../models/vetDoctormodel');
 
 
 const signToken = (id) => {
@@ -24,7 +25,7 @@ exports.signUp = async (req, res, next) => {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
             secure: true,
             httpOnly: false,
-            sameSite:'none'
+            sameSite: 'none'
         }
 
         res.cookie('jwt', token, cookieOptions);
@@ -123,18 +124,10 @@ exports.protect = async (req, res, next) => {
         };
         // Manually parse cookies
         const cookies = parseCookies(req.headers.cookie);
-        console.log('Parsed Cookies:', cookies);
-
         // Access the JWT token
         if (cookies.jwt) {
             token = cookies.jwt;
         }
-
-    
-
-  
-
-
 
         if (!token) {
             return res.status(401).json({
@@ -333,7 +326,7 @@ exports.userDetailsRegister = async (req, res, next) => {
         }
 
         req.body.userID = req.user._id;
-        req.body.role=req.user.role;
+        req.body.role = req.user.role;
 
         const newAnimalOwner = await animalOwner.create(req.body);
 
@@ -343,7 +336,7 @@ exports.userDetailsRegister = async (req, res, next) => {
             expires: new Date(
                 Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
             ),
-            secure:true,
+            secure: true,
             httpOnly: false
         };
 
@@ -361,3 +354,45 @@ exports.userDetailsRegister = async (req, res, next) => {
         });
     }
 };
+
+
+exports.vetDoctorDetailsRegister = async (req, res, next) => {
+    try {
+
+        if (!req.user) {
+            return res.status(401).json({
+                status: 'fail',
+                message: 'Not an Doctor Found',
+            });
+        }
+        req.body.userID = req.user._id;
+        req.body.role = req.user.role;
+
+        const newVetDoctor = await VetDoctor.create(req.body);
+        const token = signToken(req.user._id);
+        const cookieOptions = {
+            expires: new Date(
+                Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+            ),
+            secure: true,
+            httpOnly: false
+        };
+
+        res.cookie('jwt', token, cookieOptions);
+        res.status(201).json({
+            status: 'success',
+            message: 'New vetDoctor created!',
+            token,
+            newVetDoctor
+        });
+
+
+
+    } catch (error) {
+        res.status(400).json({
+            status: 'fail',
+            message: error.message
+        });
+
+    }
+}

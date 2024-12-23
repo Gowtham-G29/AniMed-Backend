@@ -20,5 +20,6 @@ userRouter.post('/logout',authController.clearCookieLogout);
 userRouter.get('/getMe',authController.protect,userController.getUserDetails);
 
 userRouter.post('/userDetailsRegister',authController.protect,authController.userDetailsRegister);
+userRouter.post('/vetDoctorDetailsRegister',authController.protect,authController.vetDoctorDetailsRegister);
 
 module.exports=userRouter;
