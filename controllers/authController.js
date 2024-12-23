@@ -17,38 +17,35 @@ const signToken = (id) => {
 exports.signUp = async (req, res, next) => {
     try {
         const newUser = await User.create(req.body);
-        // const url = `${req.protocol}://${req.get('host')}/`;
-        // await new Email(newUser, url).sendWelcome();
+        const url = `${req.protocol}://${req.get('host')}/`;
+        await new Email(newUser, url).sendWelcome();
 
         const token = signToken(newUser._id);
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-            // secure: process.env.NODE_ENV === 'production',
-            // httpOnly: false,
-            // sameSite: 'none'
             httpOnly: true,
-            secure: true,  // Enable secure flag for production (HTTPS only)
-            sameSite: 'Lax',
+            secure: process.env.NODE_ENV === 'production',  // Only true for production with HTTPS
+            sameSite: 'None',  // Use 'None' if cross-origin
             path: '/',
-        }
+        };
 
         res.clearCookie('jwt', { path: '/' });
-
         res.cookie('jwt', token, cookieOptions);
 
         res.status(201).json({
             status: 'Success',
-            message: 'New user created !',
+            message: 'New user created!',
             token,
-            newUser
-        })
+            newUser,
+        });
     } catch (err) {
         res.status(404).json({
             status: err.status,
-            message: err.message
-        })
+            message: err.message,
+        });
     }
 };
+
 
 exports.login = async (req, res, next) => {
     try {
