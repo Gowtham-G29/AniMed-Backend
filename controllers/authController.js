@@ -29,8 +29,7 @@ exports.signUp = async (req, res, next) => {
             path: '/',
         };
 
-        // Clear old cookie before setting a new one
-        res.clearCookie('jwt', { path: '/' });
+        
 
         // Set the new cookie
         res.cookie('jwt', token, cookieOptions);
