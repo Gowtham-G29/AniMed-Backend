@@ -39,9 +39,8 @@ const vetDoctorSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    password: {
-        type: String,
-        required: true,
+    role: {
+        type: String
     },
     profilePicture: {
         type: String, // URL of the profile picture
