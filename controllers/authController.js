@@ -23,10 +23,16 @@ exports.signUp = async (req, res, next) => {
         const token = signToken(newUser._id);
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-            secure: process.env.NODE_ENV === 'production',
-            httpOnly: false,
-            sameSite: 'none'
+            // secure: process.env.NODE_ENV === 'production',
+            // httpOnly: false,
+            // sameSite: 'none'
+            httpOnly: true,
+            secure: true,  // Enable secure flag for production (HTTPS only)
+            sameSite: 'Lax',
+            path: '/',
         }
+
+        res.clearCookie('jwt', { path: '/' });
 
         res.cookie('jwt', token, cookieOptions);
 
@@ -290,7 +296,7 @@ exports.updateCurrentUserPassword = async (req, res, next) => {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
             secure: process.env.NODE_ENV === 'production',
             httpOnly: false
-    }
+        }
         res.cookie('jwt', token, cookieOptions);
         res.status(200).json({
             status: 'Success',
