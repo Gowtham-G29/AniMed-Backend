@@ -135,6 +135,7 @@ exports.protect = async (req, res, next) => {
                 message: 'Your are not logged In. Please Log in and get Access'
             });
         }
+
         //verify the token
         const decoded = await jwt.verify(token, process.env.JWT_SECRET);
         //check the user still exists
@@ -153,7 +154,6 @@ exports.protect = async (req, res, next) => {
                 message: 'User recently changed the password'
             });
         }
-
         //grant access to the protected route
         req.user = currentUser;
         next();
@@ -178,8 +178,6 @@ exports.restrictTo = (...roles) => {
         next();
     }
 };
-
-
 
 
 
@@ -385,8 +383,6 @@ exports.vetDoctorDetailsRegister = async (req, res, next) => {
             token,
             newVetDoctor
         });
-
-
 
     } catch (error) {
         res.status(400).json({
