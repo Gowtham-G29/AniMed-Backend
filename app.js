@@ -24,8 +24,13 @@ if (process.env.NODE_ENV == 'development') {
 app.use(express.json());
 app.use('/public', express.static(path.join(__dirname, '../public')));
 
+const corsOptions = {
+    origin: 'http://localhost:5173', // Allow requests from this origin
 
-app.use(cors());
+    credentials: true, // Allow cookies to be sent with requests
+};
+
+app.use(cors(corsOptions));
 
 app.use('*', cors());
 

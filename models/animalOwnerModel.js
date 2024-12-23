@@ -4,7 +4,8 @@ const validator = require('validator');
 const animalOwnerSchema = new mongoose.Schema({
     userID: {
         type: mongoose.Schema.ObjectId,
-        ref: "User"
+        ref: "User",
+        unique: true
     },
     Name: {
         type: String,
@@ -27,7 +28,10 @@ const animalOwnerSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Enter the Full address'],
     },
-    photo:{
+    role: {
+        type: String
+    },
+    photo: {
         type: String, // URL of the profile picture
         required: false,
     },
@@ -37,6 +41,7 @@ const animalOwnerSchema = new mongoose.Schema({
     },
 
 });
+
 
 const animalOwner = mongoose.model('animalOwner', animalOwnerSchema);
 module.exports = animalOwner;

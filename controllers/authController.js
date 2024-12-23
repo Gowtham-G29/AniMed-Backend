@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const Email = require('../utils/email');
 const path = require('path');
+const animalOwner = require('../models/animalOwnerModel');
 
 
 const signToken = (id) => {
@@ -32,9 +33,7 @@ exports.signUp = async (req, res, next) => {
             status: 'Success',
             message: 'New user created !',
             token,
-            data: {
-                user: newUser
-            }
+            newUser
         })
     } catch (err) {
         res.status(404).json({
@@ -71,8 +70,8 @@ exports.login = async (req, res, next) => {
             });
         };
 
-         //check the deactivation status
-         if (!user.activate) {
+        //check the deactivation status
+        if (!user.activate) {
             return res.status(401).json({
                 status: 'Fail',
                 message: 'You account has be deactivated or deleted please contact administrator'
@@ -145,10 +144,10 @@ exports.protect = async (req, res, next) => {
             });
         }
 
-        const decoded = jwt.verify(token,process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         const currentUser = await User.findById(decoded.id);
-        
+
         console.log(currentUser);
 
         if (!currentUser) {
@@ -239,43 +238,43 @@ exports.forgotPassword = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
     try {
         const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
-      
+
         console.log(hashedToken)
 
         const user = await User.findOne({
-            passwordResetToken:hashedToken,
-            passwordResetExpires:{$gt:Date.now()}
+            passwordResetToken: hashedToken,
+            passwordResetExpires: { $gt: Date.now() }
         });
 
-        if(!user){
+        if (!user) {
             throw Error('Token is Invalid or has been Expired !');
             next();
         }
 
-        user.password=req.body.password;
-        user.passwordConfirm=req.body.passwordConfirm;
-        user.passwordResetExpires=undefined;
-        user.passwordResetToken=undefined;
+        user.password = req.body.password;
+        user.passwordConfirm = req.body.passwordConfirm;
+        user.passwordResetExpires = undefined;
+        user.passwordResetToken = undefined;
         await user.save();
 
-        const token=signToken(user._id);
-        const cookieOptions={
-            expires:new Date(Date.now()+process.env.JWT_COOKIE_EXPIRES_IN*24*60*60*1000),
-            secure:true,
-            httpOnly:true
+        const token = signToken(user._id);
+        const cookieOptions = {
+            expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+            secure: true,
+            httpOnly: true
         }
 
-        res.cookie('jwt',token,cookieOptions);
+        res.cookie('jwt', token, cookieOptions);
         res.status(201).json({
-            status:'Success',
+            status: 'Success',
             token
         })
 
     } catch (err) {
-         return res.status(500).json({
-            status:'fail',
-            message:err.message||'Something went Wrong'
-         });
+        return res.status(500).json({
+            status: 'fail',
+            message: err.message || 'Something went Wrong'
+        });
     }
 };
 
@@ -283,7 +282,7 @@ exports.resetPassword = async (req, res, next) => {
 exports.updateCurrentUserPassword = async (req, res, next) => {
     try {
         const user = await User.findById(req.user._id).select('+password');
-        
+
 
         if (!await user.correctPassword(req.body.passwordCurrent, user.password)) {
             return res.status(401).json({
@@ -316,13 +315,50 @@ exports.updateCurrentUserPassword = async (req, res, next) => {
 }
 
 
-exports.clearCookieLogout=(req,res,next)=>{
-    res.clearCookie('jwt',{path:'/'});
+exports.clearCookieLogout = (req, res, next) => {
+    res.clearCookie('jwt', { path: '/' });
     res.status(200).json({
-        status:'Success',
-        message:'Logged out Successfully'
+        status: 'Success',
+        message: 'Logged out Successfully'
     })
-}
+};
 
 
+exports.userDetailsRegister = async (req, res, next) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({
+                status: 'fail',
+                message: 'User not found'
+            });
+        }
 
+        req.body.userID = req.user._id;
+        req.body.role=req.user.role;
+
+        const newAnimalOwner = await animalOwner.create(req.body);
+
+        const token = signToken(req.user._id);
+
+        const cookieOptions = {
+            expires: new Date(
+                Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+            ),
+            secure:true,
+            httpOnly: false
+        };
+
+        res.cookie('jwt', token, cookieOptions);
+        res.status(201).json({
+            status: 'success',
+            message: 'New animal owner created!',
+            token,
+            newAnimalOwner
+        });
+    } catch (error) {
+        res.status(400).json({
+            status: 'fail',
+            message: error.message
+        });
+    }
+};

@@ -3,6 +3,8 @@ const multer = require('multer');
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
+const animalOwner = require('../models/animalOwnerModel');
+const Email = require('../utils/email');
 
 
 
@@ -133,7 +135,7 @@ exports.getUserDetails = async (req, res, next) => {
         return res.status(200).json({
             status: 'Success',
             message: 'User Details',
-                user
+            user
         })
 
     } catch (error) {
@@ -143,4 +145,6 @@ exports.getUserDetails = async (req, res, next) => {
         })
 
     }
-}
+};
+
+
