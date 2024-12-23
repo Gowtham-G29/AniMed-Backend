@@ -147,11 +147,12 @@ exports.protect = async (req, res, next) => {
             });
         }
 
-        //Check if the user change the password after the token was issued
-        if (currentUser.changedPasswordAfter(decoded.iat)) {
+      
+        // Check if the user changed the password after the token was issued
+        if (currentUser.passwordChangedAfter && currentUser.passwordChangedAfter(decoded.iat)) {
             return res.status(401).json({
                 status: 'fail',
-                message: 'User recently changed the password'
+                message: 'User recently changed the password. Please log in again.'
             });
         }
         //grant access to the protected route
