@@ -54,6 +54,10 @@ app.use(compression());
 
 app.use(express.static(`${__dirname}/public`));
 
+
+
+
+
 //use the route as middlewares
 app.use('/api/v1/users', userRouter);
 

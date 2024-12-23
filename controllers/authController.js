@@ -104,12 +104,11 @@ exports.login = async (req, res, next) => {
 exports.protect = async (req, res, next) => {
     try {
         let token;
+        //for the development
 
-        // //for the development
         // if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {// define the query authorization and token in headers
         //     token = req.headers.authorization.split(' ')[1];
         // }
-
 
         // for production
         const parseCookies = (cookieHeader) => {
@@ -130,47 +129,46 @@ exports.protect = async (req, res, next) => {
         if (cookies.jwt) {
             token = cookies.jwt;
         }
-        console.log(token);
 
+    
 
-        // if (req.cookies.jwt) {
-        //     token = req.cookies.jwt
-        // }
+  
+
 
 
         if (!token) {
             return res.status(401).json({
                 status: 'fail',
-                message: 'Your are not logged In. Please Log in'
+                message: 'Your are not logged In. Please Log in and get Access'
             });
         }
-
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
+        //verify the token
+        const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+        //check the user still exists
         const currentUser = await User.findById(decoded.id);
-
-        console.log(currentUser);
-
         if (!currentUser) {
             return res.status(401).json({
                 status: 'fail',
-                message: 'The user belonging to this token in no longer exists'
+                message: 'The user belonging to this token no longer exists'
             });
         }
 
-        if (currentUser.passwordChangedAfter(decoded.iat)) {
+        //Check if the user change the password after the token was issued
+        if (currentUser.changedPasswordAfter(decoded.iat)) {
             return res.status(401).json({
                 status: 'fail',
                 message: 'User recently changed the password'
             });
         }
 
+        //grant access to the protected route
         req.user = currentUser;
         next();
-    } catch (err) {
+
+    } catch (error) {
         res.status(500).json({
             status: 'fail',
-            message: err.message
+            message: error.message
         })
     }
 };
