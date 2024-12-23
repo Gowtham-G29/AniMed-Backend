@@ -358,7 +358,7 @@ exports.userDetailsRegister = async (req, res, next) => {
 
 exports.vetDoctorDetailsRegister = async (req, res, next) => {
     try {
-
+          console.log(req.user);
         if (!req.user) {
             return res.status(401).json({
                 status: 'fail',
