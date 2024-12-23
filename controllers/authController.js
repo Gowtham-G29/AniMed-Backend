@@ -24,7 +24,7 @@ exports.signUp = async (req, res, next) => {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
             secure: true,
             httpOnly: false,
-            // sameSite:'none'
+            sameSite:'none'
         }
 
         res.cookie('jwt', token, cookieOptions);
@@ -105,31 +105,32 @@ exports.protect = async (req, res, next) => {
     try {
         let token;
 
-        //for the development
-        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {// define the query authorization and token in headers
-            token = req.headers.authorization.split(' ')[1];
-        }
+        // //for the development
+        // if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {// define the query authorization and token in headers
+        //     token = req.headers.authorization.split(' ')[1];
+        // }
 
 
         // for production
-        // const parseCookies = (cookieHeader) => {
-        //     const cookies = {};
-        //     if (cookieHeader) {
-        //         cookieHeader.split(';').forEach(cookie => {
-        //             const [name, value] = cookie.split('=');
-        //             cookies[name.trim()] = decodeURIComponent(value);
-        //         });
-        //     }
-        //     return cookies;
-        // };
-        // // Manually parse cookies
-        // const cookies = parseCookies(req.headers.cookie);
-        // console.log('Parsed Cookies:', cookies);
+        const parseCookies = (cookieHeader) => {
+            const cookies = {};
+            if (cookieHeader) {
+                cookieHeader.split(';').forEach(cookie => {
+                    const [name, value] = cookie.split('=');
+                    cookies[name.trim()] = decodeURIComponent(value);
+                });
+            }
+            return cookies;
+        };
+        // Manually parse cookies
+        const cookies = parseCookies(req.headers.cookie);
+        console.log('Parsed Cookies:', cookies);
 
-        // // Access the JWT token
-        // if (cookies.jwt) {
-        //     token = cookies.jwt;
-        // }
+        // Access the JWT token
+        if (cookies.jwt) {
+            token = cookies.jwt;
+        }
+        console.log(token);
 
 
         // if (req.cookies.jwt) {
