@@ -28,7 +28,7 @@ const vetDoctorSchema = new mongoose.Schema({
         required: true,
     },
     experience: {
-        type: Number, // Years of experience
+        type: Number, 
         required: true,
     },
     clinicName: {
@@ -43,7 +43,7 @@ const vetDoctorSchema = new mongoose.Schema({
         type: String
     },
     profilePicture: {
-        type: String, // URL of the profile picture
+        type: String, 
         required: false,
     },
     preferredLanguage: {

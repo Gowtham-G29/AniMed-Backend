@@ -8,11 +8,13 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const compression = require('compression');
 const path = require('path');
-
-
 const app = express();
 
+
+
+//Router mount
 const userRouter = require('./routes/userRoutes');
+const animalRouter=require('./routes/animalRoutes');
 
 if (process.env.NODE_ENV == 'development') {
     app.use(morgan('dev'));
@@ -60,6 +62,7 @@ app.use(express.static(`${__dirname}/public`));
 
 //use the route as middlewares
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/animals',animalRouter);
 
 
 

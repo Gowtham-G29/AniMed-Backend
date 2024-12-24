@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const animalSchema = new mongoose.Schema({
     ownerID: {
         type: mongoose.Schema.ObjectId,
-        ref: 'animalOwner'
+        ref: 'User'
     },
     name: {
         type: String,
@@ -19,7 +19,6 @@ const animalSchema = new mongoose.Schema({
     },
     age: {
         type: String,
-        // required:[true,'Please Enter the Animal Age']
     },
     gender: {
         type: String,
@@ -32,6 +31,7 @@ const animalSchema = new mongoose.Schema({
     uniqueIdentificationMark: {
         type: String
     },
+
     // Medical History
     vaccinationRecords: [
         {
@@ -88,6 +88,7 @@ const animalSchema = new mongoose.Schema({
         },
     ],
 
+    
     // Current Health Complaint
     currentComplaint: {
         symptoms: [
@@ -130,3 +131,39 @@ const animalSchema = new mongoose.Schema({
 
 const animal = mongoose.model('animal', animalSchema);
 module.exports = animal;
+
+
+// const mongoose = require('mongoose');
+
+// const animalSchema = new mongoose.Schema({
+//   name: { type: String, required: true },
+//   species: { type: String, required: true },
+//   breed: { type: String, required: true },
+//   gender: { type: String, required: true },
+//   weight: { type: String, required: false },
+//   uniqueIdentificationMark: { type: String, required: false },
+//   vaccinationRecords: [{
+//     date: { type: Date, required: true },
+//     type: { type: String, required: true },
+//   }],
+//   previousIllnesses: [{
+//     name: { type: String, required: false },
+//     details: { type: String, required: false },
+//   }],
+//   surgicalHistory: [{
+//     name: { type: String, required: false },
+//     date: { type: Date, required: false },
+//   }],
+//   allergies: [{ type: String, required: false }],
+//   currentComplaint: {
+//     symptoms: [{ type: String, required: false }],
+//     onsetDate: { type: Date, required: false },
+//     severity: { type: String, required: false },
+//     behaviorChanges: { type: String, required: false },
+//     dietaryChanges: { type: String, required: false },
+//   },
+//   insurance: { type: String, required: false },
+//   ownerShipDocument: { type: String, required: false },
+// });
+
+// module.exports = mongoose.model('Animal', animalSchema);

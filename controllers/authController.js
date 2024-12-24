@@ -19,17 +19,14 @@ exports.signUp = async (req, res, next) => {
         const newUser = await User.create(req.body);
         // const url = `${req.protocol}://${req.get('host')}/`;
         // await new Email(newUser, url).sendWelcome();
-
-        const token = signToken(newUser._id);
         
+        const token = signToken(newUser._id);
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
             httpOnly: true,
             secure: true, // true if in production
             sameSite: 'None', // Required for cross-origin cookies
         };
-
-        
 
         // Set the new cookie
         res.cookie('jwt', token, cookieOptions);
@@ -47,7 +44,6 @@ exports.signUp = async (req, res, next) => {
         });
     }
 };
-
 
 
 exports.login = async (req, res, next) => {
@@ -87,11 +83,13 @@ exports.login = async (req, res, next) => {
 
 
         const token = signToken(user._id);
-        cookieOptions = {
+        const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-            secure: process.env.NODE_ENV === 'production',
-            httpOnly: false
-        }
+            httpOnly: true,
+            secure: true, // true if in production
+            sameSite: 'None', // Required for cross-origin cookies
+        };
+
 
         res.cookie('jwt', token, cookieOptions);
         res.status(200).json({
@@ -257,9 +255,11 @@ exports.resetPassword = async (req, res, next) => {
         const token = signToken(user._id);
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-            secure: process.env.NODE_ENV === 'production',
-            httpOnly: false
-        }
+            httpOnly: true,
+            secure: true, // true if in production
+            sameSite: 'None', // Required for cross-origin cookies
+        };
+
 
         res.cookie('jwt', token, cookieOptions);
         res.status(201).json({
@@ -294,9 +294,11 @@ exports.updateCurrentUserPassword = async (req, res, next) => {
         const token = signToken(user._id);
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-            secure: process.env.NODE_ENV === 'production',
-            httpOnly: false
-        }
+            httpOnly: true,
+            secure: true, // true if in production
+            sameSite: 'None', // Required for cross-origin cookies
+        };
+
         res.cookie('jwt', token, cookieOptions);
         res.status(200).json({
             status: 'Success',
@@ -338,12 +340,12 @@ exports.userDetailsRegister = async (req, res, next) => {
         const token = signToken(req.user._id);
 
         const cookieOptions = {
-            expires: new Date(
-                Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-            ),
-            secure: process.env.NODE_ENV === 'production',
-            httpOnly: false
+            expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+            httpOnly: true,
+            secure: true, // true if in production
+            sameSite: 'None', // Required for cross-origin cookies
         };
+
 
         res.cookie('jwt', token, cookieOptions);
         res.status(201).json({
@@ -376,12 +378,12 @@ exports.vetDoctorDetailsRegister = async (req, res, next) => {
         const newVetDoctor = await VetDoctor.create(req.body);
         const token = signToken(req.user._id);
         const cookieOptions = {
-            expires: new Date(
-                Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-            ),
-            secure: process.env.NODE_ENV === 'production',
-            httpOnly: false
+            expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+            httpOnly: true,
+            secure: true, // true if in production
+            sameSite: 'None', // Required for cross-origin cookies
         };
+
 
         res.cookie('jwt', token, cookieOptions);
         res.status(201).json({
