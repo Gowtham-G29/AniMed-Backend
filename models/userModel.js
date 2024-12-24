@@ -22,10 +22,10 @@ const userSchema = new mongoose.Schema({
         enum: ['user', 'veternarian'],
         default: 'user'
     },
-    photo:{
+    photo: {
         type: String, // URL of the profile picture
         required: false,
-        default:'default.jpeg'
+        default: 'default.jpeg'
     },
     password: {
         type: String,
@@ -40,17 +40,22 @@ const userSchema = new mongoose.Schema({
             validator: function (el) {
                 return el === this.password;
             },
-            message:'Password Not Match !'
+            message: 'Password Not Match !'
         }
     },
-    passwordChangedAt:Date,
-    passwordResetToken:String,
-    passwordResetExpires:Date,
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
 
-    activate:{
-        type:Boolean,
-        default:true
-    }
+
+    activate: {
+        type: Boolean,
+        default: true
+    }, 
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 
@@ -65,15 +70,15 @@ userSchema.pre('save', async function (next) {
 
 
 
-userSchema.pre(/^find/,function(next){
-    this.find({active:{$ne:false}});
+userSchema.pre(/^find/, function (next) {
+    this.find({ active: { $ne: false } });
     next();
 });
 
 
 //global function
-userSchema.methods.correctPassword=async function (candidatePassword,userPassword) {
-    return await bcrypt.compare(candidatePassword,userPassword);
+userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
+    return await bcrypt.compare(candidatePassword, userPassword);
 };
 
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
@@ -84,10 +89,10 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
     return false;
 };
 
-userSchema.methods.createPasswordResetToken=function(){
-    const resetToken=crypto.randomBytes(32).toString('hex');
-    this.passwordResetToken=crypto.createHash('sha256').update(resetToken).digest('hex');
-    this.passwordResetExpires=Date.now()+10*60*1000;
+userSchema.methods.createPasswordResetToken = function () {
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
     return resetToken;
 };
 
@@ -95,5 +100,5 @@ userSchema.methods.createPasswordResetToken=function(){
 
 
 
-const User=mongoose.model('User',userSchema);
-module.exports=User;
+const User = mongoose.model('User', userSchema);
+module.exports = User;
