@@ -61,7 +61,7 @@ const animalSchema = new mongoose.Schema({
         {
             name: {
                 type: String,
-                required: true,
+                required: false,
             },
             duration: {
                 type: String,
