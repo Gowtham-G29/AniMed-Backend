@@ -21,7 +21,7 @@ exports.animalDetailsRegister=async(req,res,next)=>{
             })
         };
         
-        req.body.userID=req.user._id;
+        req.body.ownerID=req.user._id;
 
         const newAnimal=await Animal.create(req.body);
         
