@@ -346,9 +346,11 @@ exports.userDetailsRegister = async (req, res, next) => {
         const newAnimalOwner = await animalOwner.create(req.body);
    
    
-        const user = await User.findById(req.user._id); // Get user by ID
-        user.detailsRegStatus = true; // Update the detailsRegStatus field
-        await user.save();     
+        const exuser = await User.findById(req.user._id); // Get user by ID
+             if(exuser){
+                exuser.detailsRegStatus = true; // Update the detailsRegStatus field
+                await exuser.save();
+             }
 
         const token = signToken(req.user._id);
 
