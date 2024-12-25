@@ -102,8 +102,6 @@ exports.login = async (req, res, next) => {
             user
         });
 
-        next();
-
     } catch (err) {
         res.status(500).json({
             status: 'Error',
@@ -112,44 +110,6 @@ exports.login = async (req, res, next) => {
     }
 };
 
-
-exports.checkRegister = async (req, res, next) => {
-        try {
-            const AnimalOwner=await animalOwner.findOne({userID:req.user._id});
-
-            if(!AnimalOwner){
-                return res.status(400).json({
-                    status:'fail',
-                    message:'Animal owner is not registered',
-                })
-            }
-            const token = signToken(req.user._id);
-            const cookieOptions = {
-                expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000), // expiry in days
-                httpOnly: true,
-                secure: true,
-                sameSite: 'None',
-            };
-    
-    
-            res.cookie('jwt', token, cookieOptions);
-    
-            res.status(200).json({
-                status: 'Success',
-                message: 'User Login Successful',
-                token,
-                AnimalOwner
-            });     
-            
-        } catch (error) {
-            return res.status(500).json({
-                status:'fail',
-                message:error.message
-            })
-            
-        }
-
-};
 
 
 
@@ -384,7 +344,7 @@ exports.userDetailsRegister = async (req, res, next) => {
         req.body.role = req.user.role;
 
         const newAnimalOwner = await animalOwner.create(req.body);
-
+        req.user.detailsRegStatus = true;
         const token = signToken(req.user._id);
 
         const cookieOptions = {
