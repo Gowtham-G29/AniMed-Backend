@@ -5,7 +5,6 @@ const Email = require('../utils/email');
 const path = require('path');
 const animalOwner = require('../models/animalOwnerModel');
 const VetDoctor = require('../models/vetDoctormodel');
-const animalOwner = require('../models/animalOwnerModel');
 
 
 const signToken = (id) => {
