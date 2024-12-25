@@ -395,8 +395,8 @@ exports.vetDoctorDetailsRegister = async (req, res, next) => {
         if (newVetDoctor) {
             await User.findByIdAndUpdate(
                 req.user._id,
-                { detailsRegStatus: true, activate: false },
-                { new: true, runValidators: true }
+                { detailsRegStatus: true },
+                { new: true }
             );
         }
 
