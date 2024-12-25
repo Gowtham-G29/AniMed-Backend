@@ -5,7 +5,7 @@ const userRouter=express.Router();
 
 
 userRouter.post('/signup',authController.signUp);
-userRouter.post('/login',authController.login);
+userRouter.post('/login/checkRegister',authController.login,authController.protect,authController.checkRegister);
 
 
 userRouter.post('/forgotPassword',authController.forgotPassword);
