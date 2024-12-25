@@ -416,6 +416,7 @@ exports.vetDoctorDetailsRegister = async (req, res, next) => {
             token,
             newVetDoctor
         });
+        next();
 
     } catch (error) {
         res.status(500).json({
