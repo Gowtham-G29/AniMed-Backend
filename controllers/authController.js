@@ -81,16 +81,10 @@ exports.login = async (req, res, next) => {
                 message: 'You account has be deactivated or deleted please contact administrator'
             })
         }
-
-        const animalOwner = await animalOwner.findOne({ userID: user._id });
-        if (!animalOwner) {
-            return res.status(404).json({
-                status: 'Fail',
-                message: 'No animal owner details found.',
-            });
-        }
+   
 
         const token = signToken(user._id);
+
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
             httpOnly: true,
@@ -101,15 +95,11 @@ exports.login = async (req, res, next) => {
 
         res.cookie('jwt', token, cookieOptions);
         
-
-
-
         res.status(200).json({
             status: 'Success',
             message: 'User Login Successfully',
             token,
-            user,
-            animalOwner
+            user
 
         })
 
