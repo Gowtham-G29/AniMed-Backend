@@ -49,67 +49,66 @@ exports.signUp = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
+
         if (!email || !password) {
-            return res.status(404).json({
+            return res.status(400).json({
                 status: 'Fail',
-                message: 'Please provide both Email and Password !'
+                message: 'Please provide both Email and Password!'
             });
         }
         const user = await User.findOne({ email }).select('+password');
+
 
         if (!user) {
             return res.status(401).json({
                 status: 'fail',
                 message: 'User Not Found',
-            })
-        };
+            });
+        }
 
-
-
+    
         const correct = await user.correctPassword(password, user.password);
         if (!correct) {
             return res.status(401).json({
                 status: 'fail',
-                message: 'Invalid Password'
+                message: 'Invalid Password',
             });
-        };
+        }
 
-        //check the deactivation status
+        
         if (!user.activate) {
             return res.status(401).json({
                 status: 'Fail',
-                message: 'You account has be deactivated or deleted please contact administrator'
-            })
+                message: 'Your account has been deactivated or deleted. Please contact the administrator.',
+            });
         }
-   
-
         const token = signToken(user._id);
 
+        
         const cookieOptions = {
-            expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+            expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000), // expiry in days
             httpOnly: true,
-            secure: true, // true if in production
-            sameSite: 'None', // Required for cross-origin cookies
+            secure: true, 
+            sameSite: 'None',
         };
 
-
-        res.cookie('jwt', token, cookieOptions);
         
+        res.cookie('jwt', token, cookieOptions);
+
         res.status(200).json({
             status: 'Success',
-            message: 'User Login Successfully',
+            message: 'User Login Successful',
             token,
             user
-
-        })
-
+        });
     } catch (err) {
         res.status(500).json({
-            status: err.status,
-            message: err.message
+            status: 'Error',
+            message: err.message || 'Internal Server Error',
         });
     }
 };
+
 
 exports.protect = async (req, res, next) => {
     try {
