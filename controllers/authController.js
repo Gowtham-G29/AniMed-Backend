@@ -367,7 +367,8 @@ exports.userDetailsRegister = async (req, res, next) => {
             status: 'success',
             message: 'New animal owner created!',
             token,
-            newAnimalOwner
+            newAnimalOwner,
+            exuser
         });
     } catch (error) {
         res.status(400).json({
