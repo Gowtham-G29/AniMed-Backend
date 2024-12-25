@@ -396,7 +396,7 @@ exports.vetDoctorDetailsRegister = async (req, res, next) => {
             await User.findByIdAndUpdate(
                 req.user._id,
                 { detailsRegStatus: true, activate: false },
-                { new: true }
+                { new: true, runValidators: true }
             );
         }
 
@@ -404,7 +404,7 @@ exports.vetDoctorDetailsRegister = async (req, res, next) => {
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
             httpOnly: true,
-            secure: true, 
+            secure: true,
             sameSite: 'None',
         };
 
@@ -418,7 +418,7 @@ exports.vetDoctorDetailsRegister = async (req, res, next) => {
         });
 
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             status: 'fail',
             message: error.message
         });
