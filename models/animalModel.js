@@ -4,7 +4,7 @@ const animalSchema = new mongoose.Schema({
     ownerID: {
         type: mongoose.Schema.ObjectId,
         ref: 'User',
-        required:true
+        required: true
     },
     name: {
         type: String,
@@ -89,7 +89,7 @@ const animalSchema = new mongoose.Schema({
         },
     ],
 
-    
+
     // Current Health Complaint
     currentComplaint: {
         symptoms: [
@@ -124,11 +124,11 @@ const animalSchema = new mongoose.Schema({
     },
     geolocation: {
         latitude: {
-            type: Number,
+            type: String,
             required: false,
         },
         longitude: {
-            type: Number,
+            type: String,
             required: false,
         },
     },
