@@ -344,10 +344,12 @@ exports.userDetailsRegister = async (req, res, next) => {
         req.body.role = req.user.role;
 
         const newAnimalOwner = await animalOwner.create(req.body);
-        req.user.detailsRegStatus = true;
+   
+   
+        const user = await User.findById(req.user._id); // Get user by ID
+        user.detailsRegStatus = true; // Update the detailsRegStatus field
+        await user.save();     
 
-        await req.user.save();
-        
         const token = signToken(req.user._id);
 
         const cookieOptions = {
