@@ -5,6 +5,7 @@ const Email = require('../utils/email');
 const path = require('path');
 const animalOwner = require('../models/animalOwnerModel');
 const VetDoctor = require('../models/vetDoctormodel');
+const animalOwner = require('../models/animalOwnerModel');
 
 
 const signToken = (id) => {
@@ -65,6 +66,7 @@ exports.login = async (req, res, next) => {
         };
 
 
+
         const correct = await user.correctPassword(password, user.password);
         if (!correct) {
             return res.status(401).json({
@@ -81,7 +83,8 @@ exports.login = async (req, res, next) => {
             })
         }
 
-
+        const animalOwner=await animalOwner.findOne({userID:user._id});
+        
         const token = signToken(user._id);
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
@@ -92,11 +95,17 @@ exports.login = async (req, res, next) => {
 
 
         res.cookie('jwt', token, cookieOptions);
+        
+
+
+
         res.status(200).json({
             status: 'Success',
             message: 'User Login Successfully',
             token,
-            user
+            user,
+            animalOwner
+
         })
 
     } catch (err) {
@@ -338,8 +347,6 @@ exports.userDetailsRegister = async (req, res, next) => {
 
         const newAnimalOwner = await animalOwner.create(req.body);
        
-        req.user.animalOwnerID=newAnimalOwner._id;
-
         const token = signToken(req.user._id);
 
         const cookieOptions = {

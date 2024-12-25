@@ -55,10 +55,7 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    animalOwnerID:{
-        type:mongoose.Schema.ObjectId,
-        ref:'animalOwner'
-     },
+   
 });
 
 
