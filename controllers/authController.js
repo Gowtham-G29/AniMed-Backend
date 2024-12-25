@@ -333,50 +333,60 @@ exports.clearCookieLogout = (req, res, next) => {
 
 exports.userDetailsRegister = async (req, res, next) => {
     try {
+        // Check if the user is authenticated
         if (!req.user) {
             return res.status(401).json({
                 status: 'fail',
-                message: 'User not found'
+                message: 'User not found',
             });
         }
 
+        // Add userID and role to the request body
         req.body.userID = req.user._id;
         req.body.role = req.user.role;
 
+        // Create a new animal owner
         const newAnimalOwner = await animalOwner.create(req.body);
-   
-   
-        const exuser = await User.findById(req.user._id); // Get user by ID
-             if(exuser){
-                exuser.detailsRegStatus = true; // Update the detailsRegStatus field
-                await exuser.save();
-             }
 
+        // Update the user's detailsRegStatus if newAnimalOwner is successfully created
+        if (newAnimalOwner) {
+            await User.findByIdAndUpdate(
+                req.user._id, // Find user by ID
+                { detailsRegStatus: true }, // Update the detailsRegStatus field
+                { new: true } // Return the updated document
+            );
+        }
+
+        // Generate a token for the user
         const token = signToken(req.user._id);
 
+        // Define cookie options
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
             httpOnly: true,
-            secure: true, // true if in production
-            sameSite: 'None', // Required for cross-origin cookies
+            secure:true, // Use secure cookies in production
+            sameSite: 'None', // For cross-origin requests
         };
 
-
+        // Set the cookie in the response
         res.cookie('jwt', token, cookieOptions);
+
+        // Send a success response
         res.status(201).json({
             status: 'success',
-            message: 'New animal owner created!',
+            message: 'New animal owner created and user status updated!',
             token,
             newAnimalOwner,
-            exuser
         });
     } catch (error) {
+        // Handle errors
         res.status(400).json({
             status: 'fail',
-            message: error.message
+            message: error.message,
         });
     }
 };
+
 
 
 exports.vetDoctorDetailsRegister = async (req, res, next) => {
