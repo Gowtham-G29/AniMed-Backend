@@ -50,40 +50,45 @@ exports.login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
-            return res.status(404).json({
+            return res.status(400).json({
                 status: 'Fail',
-                message: 'Please provide both Email and Password !'
+                message: 'Please provide both Email and Password!',
             });
         }
-        const user = await User.findOne({ email }).select('+password');
 
+        const user = await User.findOne({ email }).select('+password');
         if (!user) {
             return res.status(401).json({
-                status: 'fail',
-                message: 'User Not Found',
-            })
-        };
-
-
+                status: 'Fail',
+                message: 'User not found.',
+            });
+        }
 
         const correct = await user.correctPassword(password, user.password);
         if (!correct) {
             return res.status(401).json({
-                status: 'fail',
-                message: 'Invalid Password'
+                status: 'Fail',
+                message: 'Invalid password.',
             });
-        };
+        }
 
-        //check the deactivation status
+        // Check deactivation status
         if (!user.activate) {
             return res.status(401).json({
                 status: 'Fail',
-                message: 'You account has be deactivated or deleted please contact administrator'
-            })
+                message: 'Your account has been deactivated or deleted. Please contact the administrator.',
+            });
         }
 
-        const animalOwner=await animalOwner.findOne({userID:user._id});
-        
+        // Check if animalOwner exists for the user
+        const animalOwner = await animalOwner.findOne({ userID: user._id });
+        if (!animalOwner) {
+            return res.status(404).json({
+                status: 'Fail',
+                message: 'No animal owner details found.',
+            });
+        }
+
         const token = signToken(user._id);
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
@@ -92,28 +97,24 @@ exports.login = async (req, res, next) => {
             sameSite: 'None', // Required for cross-origin cookies
         };
 
-
         res.cookie('jwt', token, cookieOptions);
-        
 
-
-
-        res.status(200).json({
+        return res.status(200).json({
             status: 'Success',
-            message: 'User Login Successfully',
+            message: 'User logged in successfully.',
             token,
             user,
-            animalOwner
-
-        })
+            animalOwner, // Include animalOwner details in the response
+        });
 
     } catch (err) {
         res.status(500).json({
-            status: err.status,
-            message: err.message
+            status: 'Error',
+            message: err.message,
         });
     }
 };
+
 
 exports.protect = async (req, res, next) => {
     try {
