@@ -345,6 +345,9 @@ exports.userDetailsRegister = async (req, res, next) => {
 
         const newAnimalOwner = await animalOwner.create(req.body);
         req.user.detailsRegStatus = true;
+
+        await req.user.save();
+        
         const token = signToken(req.user._id);
 
         const cookieOptions = {
