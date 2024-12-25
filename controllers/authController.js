@@ -333,7 +333,7 @@ exports.clearCookieLogout = (req, res, next) => {
 
 exports.userDetailsRegister = async (req, res, next) => {
     try {
-        
+
         if (!req.user) {
             return res.status(401).json({
                 status: 'fail',
@@ -343,13 +343,13 @@ exports.userDetailsRegister = async (req, res, next) => {
 
         req.body.userID = req.user._id;
         req.body.role = req.user.role;
-    
+
         const newAnimalOwner = await animalOwner.create(req.body);
         if (newAnimalOwner) {
             await User.findByIdAndUpdate(
-                req.user._id, 
-                { detailsRegStatus: true }, 
-                { new: true } 
+                req.user._id,
+                { detailsRegStatus: true },
+                { new: true }
             );
         }
 
@@ -357,8 +357,8 @@ exports.userDetailsRegister = async (req, res, next) => {
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
             httpOnly: true,
-            secure:true, 
-            sameSite: 'None', 
+            secure: true,
+            sameSite: 'None',
         };
         res.cookie('jwt', token, cookieOptions);
         res.status(201).json({
@@ -394,18 +394,18 @@ exports.vetDoctorDetailsRegister = async (req, res, next) => {
 
         if (newVetDoctor) {
             await User.findByIdAndUpdate(
-                req.user._id, 
-                { detailsRegStatus: true }, 
-                { new: true } 
+                req.user._id,
+                { detailsRegStatus: true, activate: false },
+                { new: true }
             );
         }
-        
+
         const token = signToken(req.user._id);
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
             httpOnly: true,
-            secure: true, // true if in production
-            sameSite: 'None', // Required for cross-origin cookies
+            secure: true, 
+            sameSite: 'None',
         };
 
 
