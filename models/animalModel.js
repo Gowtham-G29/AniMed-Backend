@@ -122,10 +122,43 @@ const animalSchema = new mongoose.Schema({
     ownerShipDocument: {
         type: String
     },
+    geolocation: {
+        latitude: {
+            type: Number,
+            required: false,
+        },
+        longitude: {
+            type: Number,
+            required: false,
+        },
+    },
     createdAt: {
         type: Date,
         default: Date.now,
     },
+});
+
+animalSchema.pre('save', async function (next) {
+    if (!this.geolocation.latitude || !this.geolocation.longitude) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    this.geolocation.latitude = position.coords.latitude;
+                    this.geolocation.longitude = position.coords.longitude;
+                    next();
+                (error) => {
+                 },
+                   console.error('Error retrieving geolocation:', error);
+                    next();
+                }
+            );
+        } else {
+            console.error('Geolocation is not supported by this device.');
+            next();
+        }
+    } else {
+        next();
+    }
 });
 
 
