@@ -54,6 +54,10 @@ const vetDoctorSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    active:{
+        type:String,
+        default:true
+    }
 });
 
 const VetDoctor = mongoose.model('VetDoctor', vetDoctorSchema);

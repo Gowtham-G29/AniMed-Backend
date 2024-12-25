@@ -96,6 +96,7 @@ exports.login = async (req, res, next) => {
             status: 'Success',
             message: 'User Login Successfully',
             token,
+            user
         })
 
     } catch (err) {
