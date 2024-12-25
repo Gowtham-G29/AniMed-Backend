@@ -337,6 +337,8 @@ exports.userDetailsRegister = async (req, res, next) => {
         req.body.role = req.user.role;
 
         const newAnimalOwner = await animalOwner.create(req.body);
+       
+        req.user.animalOwnerID=newAnimalOwner._id;
 
         const token = signToken(req.user._id);
 

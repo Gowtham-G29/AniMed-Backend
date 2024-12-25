@@ -47,7 +47,6 @@ const userSchema = new mongoose.Schema({
     passwordResetToken: String,
     passwordResetExpires: Date,
 
-
     activate: {
         type: Boolean,
         default: true
@@ -56,6 +55,10 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    animalOwnerID:{
+        type:mongoose.Schema.ObjectId,
+        ref:'animalOwner'
+     },
 });
 
 
