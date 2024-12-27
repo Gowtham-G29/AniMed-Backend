@@ -8,7 +8,7 @@ const animalSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        required: [true, 'Please enter the animal Name!']
+        required: [false, 'Please enter the animal Name!']
     },
     species: {
         type: String,
@@ -23,7 +23,7 @@ const animalSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        required: [true, 'Please Enter the Animal Gender!'],
+        required: [false, 'Please Enter the Animal Gender!'],
         enum: ['male', 'female', 'others']
     },
     weight: {
@@ -38,11 +38,11 @@ const animalSchema = new mongoose.Schema({
         {
             date: {
                 type: Date,
-                required: true,
+                required: false,
             },
             type: {
                 type: String,
-                required: true,
+                required: false,
             },
         },
     ],
@@ -50,7 +50,7 @@ const animalSchema = new mongoose.Schema({
         {
             name: {
                 type: String,
-                required: true,
+                required: false,
             },
             details: {
                 type: String,
@@ -95,16 +95,16 @@ const animalSchema = new mongoose.Schema({
         symptoms: [
             {
                 type: String,
-                required: true,
+                required: false,
             },
         ],
         onsetDate: {
             type: Date,
-            required: true,
+            required: false,
         },
         severity: {
             type: String,
-            required: true,
+            required: false,
             enum: ['Mild', 'Moderate', 'Severe'],
         },
         behaviorChanges: {
