@@ -22,4 +22,7 @@ userRouter.get('/getMe',authController.protect,userController.getUserDetails);
 userRouter.post('/userDetailsRegister',authController.protect,authController.userDetailsRegister);
 userRouter.post('/vetDoctorDetailsRegister',authController.protect,authController.vetDoctorDetailsRegister);
 
+
+userRouter.get('/getAnimalOwner',authController.protect,userController.getAnimalOwnerDetails);
+
 module.exports=userRouter;

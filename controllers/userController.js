@@ -132,6 +132,9 @@ exports.getUserDetails = async (req, res, next) => {
             })
         };
         const user = await User.findById(req.user._id);
+        
+
+
         return res.status(200).json({
             status: 'Success',
             message: 'User Details',
@@ -146,5 +149,31 @@ exports.getUserDetails = async (req, res, next) => {
 
     }
 };
+
+
+exports.getAnimalOwnerDetails=async()=>{
+    try {
+
+        if(!req.user){
+            return res.status(401).json({
+                status:'fail',
+                message:'Animal owner Not Found !'
+            })
+        };
+
+        const AnimalOwner=await animalOwner.findOne({userID:req.user._id});
+        return res.status(200).json({
+            status:'Success',
+            message:'Animal Owner Details',
+            AnimalOwner
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            status:'fail',
+            message:error.message
+        })
+    }
+}
 
 
