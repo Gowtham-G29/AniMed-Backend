@@ -151,7 +151,7 @@ exports.getUserDetails = async (req, res, next) => {
 };
 
 
-exports.getAnimalOwnerDetails=async()=>{
+exports.getAnimalOwnerDetails=async(req,res,next)=>{
     try {
 
         if(!req.user){
