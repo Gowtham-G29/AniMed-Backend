@@ -47,6 +47,10 @@ const vetDoctorSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Enter the district']
     },
+    country:{
+        type:String,
+        required:[true,'Enter the contry'],
+    },
     pincode: {
         type: String,
         required: [true, 'Enter the pincode']

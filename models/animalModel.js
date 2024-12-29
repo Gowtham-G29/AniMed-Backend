@@ -125,11 +125,11 @@ const animalSchema = new mongoose.Schema({
     geolocation: {
         latitude: {
             type: String,
-            required: false,
+            required: true,
         },
         longitude: {
             type: String,
-            required: false,
+            required: true,
         },
     },
     createdAt: {
