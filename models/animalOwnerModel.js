@@ -40,6 +40,10 @@ const animalOwnerSchema = new mongoose.Schema({
        type:String,
        required:[true,'Enter the pincode']
     },
+    country:{
+        type:String,
+        required:[true,'Please Enter your country']
+    },
     role: {
         type: String
     },
