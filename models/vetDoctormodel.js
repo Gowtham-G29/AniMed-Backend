@@ -28,7 +28,7 @@ const vetDoctorSchema = new mongoose.Schema({
         required: true,
     },
     experience: {
-        type: Number, 
+        type: Number,
         required: true,
     },
     clinicName: {
@@ -39,11 +39,23 @@ const vetDoctorSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    state: {
+        type: String,
+        required: [true, 'enter the state']
+    },
+    district: {
+        type: String,
+        required: [true, 'Enter the district']
+    },
+    pincode: {
+        type: String,
+        required: [true, 'Enter the pincode']
+    },
     role: {
         type: String
     },
     profilePicture: {
-        type: String, 
+        type: String,
         required: false,
     },
     preferredLanguage: {
@@ -54,9 +66,9 @@ const vetDoctorSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    active:{
-        type:String,
-        default:true
+    active: {
+        type: String,
+        default: true
     }
 });
 
