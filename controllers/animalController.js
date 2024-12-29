@@ -59,7 +59,7 @@ exports.getAnimalDetails = async (req, res, next) => {
             });
         }
 
-        const animals = await Animal.find({ userID: req.user._id });
+        const animals = await Animal.find({ ownerID: req.user._id });
         res.status(201).json({
             status: 'Success',
             message: "Animals for this User is received",
