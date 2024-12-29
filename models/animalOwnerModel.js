@@ -28,6 +28,18 @@ const animalOwnerSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Enter the Full address'],
     },
+    state:{
+        type:String,
+        required:[true,'Enter the State'],
+    },
+    district:{
+        type:String,
+        required:[true,'Enter the district']
+    },
+    pincode:{
+       type:String,
+       required:[true,'Enter the pincode']
+    },
     role: {
         type: String
     },
