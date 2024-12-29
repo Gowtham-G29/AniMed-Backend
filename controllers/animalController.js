@@ -63,7 +63,7 @@ exports.getAnimalDetails = async (req, res, next) => {
         res.status(201).json({
             status: 'Success',
             message: "Animals for this User is received",
-            animals
+            data:animals
         });
 
     } catch (error) {
