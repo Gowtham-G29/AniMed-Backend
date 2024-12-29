@@ -6,6 +6,7 @@ const animalRouter=express.Router();
 
 
 animalRouter.post('/animalDetailsRegister',authController.protect,animalController.animalDetailsRegister);
+animalRouter.get('/getAnimals',authController.protect,animalController.getAnimalDetails);
 
 
 module.exports=animalRouter;
