@@ -66,6 +66,16 @@ const vetDoctorSchema = new mongoose.Schema({
         type: String,
         default: 'English',
     },
+    geolocation: {
+        latitude: {
+            type: String,
+            required: true,
+        },
+        longitude: {
+            type: String,
+            required: true,
+        },
+    },
     createdAt: {
         type: Date,
         default: Date.now,
