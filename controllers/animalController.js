@@ -122,8 +122,9 @@ exports.updateAnimal = async (req, res, next) => {
             });
         }
 
+        // Prepare the updateData object by spreading the request body
         const updateData = { ...req.body };
-        delete updateData._id; 
+        delete updateData._id;  // Ensure _id is not part of the update data
 
         if (Object.keys(updateData).length === 0) {
             return res.status(400).json({
@@ -132,7 +133,42 @@ exports.updateAnimal = async (req, res, next) => {
             });
         }
 
-        const animalUpdated = await Animal.findByIdAndUpdate(animalID, updateData,{ $set: updateData }, { new: true });
+        // Prepare the update object for MongoDB
+        let updateQuery = {};
+
+        // Dynamically build the update query
+        if (updateData.doctorSuggestions) {
+            const doctorSuggestionsUpdates = {};
+            if (updateData.doctorSuggestions.animalOwnerViewedStatus !== undefined) {
+                doctorSuggestionsUpdates['animalOwnerViewedStatus'] = updateData.doctorSuggestions.animalOwnerViewedStatus;
+            }
+            if (updateData.doctorSuggestions.doctorSuggestedStatus !== undefined) {
+                doctorSuggestionsUpdates['doctorSuggestedStatus'] = updateData.doctorSuggestions.doctorSuggestedStatus;
+            }
+            if (updateData.doctorSuggestions.medicine !== undefined) {
+                doctorSuggestionsUpdates['medicine'] = updateData.doctorSuggestions.medicine;
+            }
+            if (updateData.doctorSuggestions.preventionMethods !== undefined) {
+                doctorSuggestionsUpdates['preventionMethods'] = updateData.doctorSuggestions.preventionMethods;
+            }
+            if (updateData.doctorSuggestions.remarks !== undefined) {
+                doctorSuggestionsUpdates['remarks'] = updateData.doctorSuggestions.remarks;
+            }
+            if (updateData.doctorSuggestions.suggestedBy !== undefined) {
+                doctorSuggestionsUpdates['suggestedBy'] = updateData.doctorSuggestions.suggestedBy;
+            }
+
+            if (Object.keys(doctorSuggestionsUpdates).length > 0) {
+                updateQuery['doctorSuggestions'] = doctorSuggestionsUpdates;
+            }
+        }
+
+        // Perform the update using the dynamically built updateQuery
+        const animalUpdated = await Animal.findByIdAndUpdate(
+            animalID,
+            { $set: updateQuery },
+            { new: true }
+        );
 
         if (!animalUpdated) {
             return res.status(404).json({
@@ -154,4 +190,3 @@ exports.updateAnimal = async (req, res, next) => {
         });
     }
 };
-
