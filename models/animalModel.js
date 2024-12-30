@@ -155,20 +155,18 @@ const animalSchema = new mongoose.Schema({
             required: false,
             default: 'Not yet viewed by doctor !'
         },
-        animalOwnerViewedStatus: {
-            type: Boolean,
-            required: false,
-            default: false
-        },
 
-        doctorSuggestedStatus: {
-            type: Boolean,
-            required: false,
-            default: false
-        }
-    }
+    }, animalOwnerViewedStatus: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
 
-    ,
+    doctorSuggestedStatus: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
 
     createdAt: {
         type: Date,
