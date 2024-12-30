@@ -112,7 +112,7 @@ exports.deleteAnimal = async (req, res, next) => {
 
 exports.updateAnimal = async (req, res, next) => {
     try {
-        const animalID = req.body.animalID;
+        const animalID = req.body._id;
 
         if (!animalID) {
             return res.status(400).json({
