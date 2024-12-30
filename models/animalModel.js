@@ -133,20 +133,24 @@ const animalSchema = new mongoose.Schema({
         },
     },
 
-    doctorSuggestions: {
-        medicine: {
-            type: String,
-            required: false
-        },
-        preventionMethods: {
-            type: String,
-            required: false
-        },
-        remarks: {
-            type: String,
-            required: false
+    doctorSuggestions: [
+        {
+            medicine: {
+                type: String,
+                required: false
+            },
+            preventionMethods: {
+                type: String,
+                required: false
+            },
+            remarks: {
+                type: String,
+                required: false
+            }
+
         }
-    },
+
+    ],
 
     createdAt: {
         type: Date,
