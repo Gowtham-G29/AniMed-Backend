@@ -7,6 +7,6 @@ const animalRouter=express.Router();
 
 animalRouter.post('/animalDetailsRegister',authController.protect,animalController.animalDetailsRegister);
 animalRouter.get('/getAnimals',authController.protect,animalController.getAnimalDetails);
-
+animalRouter.delete('/deleteAnimal',animalController.deleteAnimal)
 
 module.exports=animalRouter;

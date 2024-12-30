@@ -63,7 +63,7 @@ exports.getAnimalDetails = async (req, res, next) => {
         res.status(201).json({
             status: 'Success',
             message: "Animals for this User is received",
-            data:animals
+            data: animals
         });
 
     } catch (error) {
@@ -74,9 +74,34 @@ exports.getAnimalDetails = async (req, res, next) => {
         })
 
     };
+};
 
+exports.deleteAnimal = async (req, res, next) => {
+    try {
+        if (!req.animalID) {
+            return res.status(401).json({
+                status: "fail",
+                message: 'animal Not found'
+            })
+        }
 
+        const animalID = req.animalID;
+        const deletingAnimal = await Animal.findByIdAndDelete({ _id: animalID });
 
+        res.status(204).json({
+            status: 'Success',
+            message: 'Your requested animal was Successfully deleted!',
+            deletedAnimal: deletingAnimal
+        })
+
+    } catch (error) {
+
+        return res.status(500).json({
+            status: 'fail',
+            message: error.message
+        })
+
+    }
 }
 
 
