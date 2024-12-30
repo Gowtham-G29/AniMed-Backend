@@ -132,6 +132,22 @@ const animalSchema = new mongoose.Schema({
             required: true,
         },
     },
+
+    doctorSuggestions: {
+        medicine: {
+            type: String,
+            required: false
+        },
+        preventionMethods: {
+            type: String,
+            required: false
+        },
+        remarks: {
+            type: String,
+            required: false
+        }
+    },
+
     createdAt: {
         type: Date,
         default: Date.now,
