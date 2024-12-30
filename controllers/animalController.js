@@ -109,9 +109,10 @@ exports.deleteAnimal = async (req, res, next) => {
         });
     }
 };
+
+
 exports.updateAnimal = async (req, res, next) => {
     try {
-        // Expecting _id as the key for the animal ID
         const animalID = req.body._id;
 
         if (!animalID) {
@@ -121,9 +122,8 @@ exports.updateAnimal = async (req, res, next) => {
             });
         }
 
-        // Extract the update data and remove _id (not to update it)
         const updateData = { ...req.body };
-        delete updateData._id; // Remove _id so it's not updated in the database
+        delete updateData._id; 
 
         if (Object.keys(updateData).length === 0) {
             return res.status(400).json({
@@ -132,7 +132,7 @@ exports.updateAnimal = async (req, res, next) => {
             });
         }
 
-        const animalUpdated = await Animal.findByIdAndUpdate(animalID, updateData, { new: true });
+        const animalUpdated = await Animal.findByIdAndUpdate(animalID, updateData,{ $set: updateData }, { new: true });
 
         if (!animalUpdated) {
             return res.status(404).json({
