@@ -110,9 +110,46 @@ exports.deleteAnimal = async (req, res, next) => {
     }
 };
 
+exports.updateAnimal = async (req, res, next) => {
+    try {
+        const animalID = req.body.animalID;
 
+        if (!animalID) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'No animal ID provided'
+            });
+        }
 
+        const updateData = { ...req.body };
+        delete updateData.animalID; 
 
+        if (Object.keys(updateData).length === 0) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'No fields provided to update'
+            });
+        }
 
+        const animalUpdated = await Animal.findByIdAndUpdate(animalID, updateData, { new: true });
 
+        if (!animalUpdated) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Animal not found'
+            });
+        }
 
+        res.status(200).json({
+            status: 'success',
+            message: 'Animal updated successfully',
+            animalUpdated
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            status: 'fail',
+            message: error.message
+        });
+    }
+};
