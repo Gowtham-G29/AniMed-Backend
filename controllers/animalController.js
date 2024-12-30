@@ -78,31 +78,38 @@ exports.getAnimalDetails = async (req, res, next) => {
 
 exports.deleteAnimal = async (req, res, next) => {
     try {
-        if (!req.animalID) {
+        const animalID = req.body.animalID; 
+
+        if (!animalID) {
             return res.status(401).json({
                 status: "fail",
-                message: 'animal Not found'
-            })
+                message: 'Animal not found'
+            });
         }
 
-        const animalID = req.animalID;
-        const deletingAnimal = await Animal.findByIdAndDelete({ _id: animalID });
+        const deletingAnimal = await Animal.findByIdAndDelete(animalID);
+
+        if (!deletingAnimal) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Animal not found for deletion'
+            });
+        }
 
         res.status(204).json({
-            status: 'Success',
-            message: 'Your requested animal was Successfully deleted!',
+            status: 'success',
+            message: 'Your requested animal was successfully deleted!',
             deletedAnimal: deletingAnimal
-        })
+        });
 
     } catch (error) {
-
         return res.status(500).json({
             status: 'fail',
             message: error.message
-        })
-
+        });
     }
-}
+};
+
 
 
 
