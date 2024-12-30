@@ -133,27 +133,27 @@ const animalSchema = new mongoose.Schema({
         },
     },
 
-    doctorSuggestions: [
-        {
-            medicine: {
-                type: String,
-                required: false,
-                default:'None'
-            },
-            preventionMethods: {
-                type: String,
-                required: false,
-                default:'None'
-            },
-            remarks: {
-                type: String,
-                required: false,
-                default:'None'
-            }
-
+    doctorSuggestions:
+    {
+        medicine: {
+            type: String,
+            required: false,
+            default: 'None'
+        },
+        preventionMethods: {
+            type: String,
+            required: false,
+            default: 'None'
+        },
+        remarks: {
+            type: String,
+            required: false,
+            default: 'None'
         }
 
-    ],
+    }
+
+    ,
 
     createdAt: {
         type: Date,
