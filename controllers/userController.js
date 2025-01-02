@@ -180,24 +180,27 @@ exports.getAnimalOwnerDetails = async (req, res, next) => {
 
 exports.getNearbyDoctorsLocation = async (req, res, next) => {
     try {
-        if (!req.user) {
-            return res.status(401).json({
+        // Check if userID is provided in the request body
+        const { userID } = req.body;
+        if (!userID) {
+            return res.status(400).json({
                 status: 'fail',
-                message: 'User not found'
+                message: 'User ID is required'
             });
         }
 
-        
-        const AnimalOwner = await animalOwner.findOne({ userID: req.user._id });
-        if (!AnimalOwner) {
+        // Find animal owner by userID
+        const animalOwner = await AnimalOwner.findOne({ userID });
+        if (!animalOwner) {
             return res.status(403).json({
                 status: 'fail',
                 message: 'No animal owner found for this user'
             });
         }
 
-        const { district } = AnimalOwner;
+        const { district } = animalOwner;
 
+        // Find doctors in the same district
         const doctorsNearby = await VetDoctor.find({ district });
         if (doctorsNearby.length === 0) {
             return res.status(404).json({
@@ -206,14 +209,14 @@ exports.getNearbyDoctorsLocation = async (req, res, next) => {
             });
         }
 
-        
+        // Return success with doctor locations
         return res.status(200).json({
             status: 'success',
             message: 'Doctors found in the nearby location',
             data: doctorsNearby
         });
     } catch (error) {
-    
+        // Handle server errors
         console.error(error);
         return res.status(500).json({
             status: 'fail',

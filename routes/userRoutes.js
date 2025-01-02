@@ -25,6 +25,6 @@ userRouter.post('/vetDoctorDetailsRegister',authController.protect,authControlle
 
 userRouter.get('/getAnimalOwner',authController.protect,userController.getAnimalOwnerDetails);
 
-userRouter.get('/getNearByDoctors',authController.protect,userController.getNearbyDoctorsLocation);
+userRouter.get('/getNearByDoctors',userController.getNearbyDoctorsLocation);
 
 module.exports=userRouter;
