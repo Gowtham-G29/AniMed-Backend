@@ -190,15 +190,15 @@ exports.getNearbyDoctorsLocation = async (req, res, next) => {
         }
 
         // Find animal owner by userID
-        const animalOwner = await AnimalOwner.findOne({ userID });
-        if (!animalOwner) {
+        const AnimalOwner = await animalOwner.findOne({ userID });
+        if (!AnimalOwner) {
             return res.status(403).json({
                 status: 'fail',
                 message: 'No animal owner found for this user'
             });
         }
 
-        const { district } = animalOwner;
+        const { district } = AnimalOwner;
 
         // Find doctors in the same district
         const doctorsNearby = await VetDoctor.find({ district });
