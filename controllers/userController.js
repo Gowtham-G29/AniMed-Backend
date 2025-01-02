@@ -180,8 +180,8 @@ exports.getAnimalOwnerDetails = async (req, res, next) => {
 
 exports.getNearbyDoctorsLocation = async (req, res, next) => {
     try {
-        // Check if userID is provided in the request body
-        const { userID } = req.body;
+        // Extract userID from request parameters
+        const { userID } = req.query;
         if (!userID) {
             return res.status(400).json({
                 status: 'fail',
@@ -225,5 +225,6 @@ exports.getNearbyDoctorsLocation = async (req, res, next) => {
         });
     }
 };
+
 
 
