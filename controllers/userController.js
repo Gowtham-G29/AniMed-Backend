@@ -5,7 +5,6 @@ const fs = require('fs');
 const path = require('path');
 const animalOwner = require('../models/animalOwnerModel');
 const Email = require('../utils/email');
-const animalOwner = require('../models/animalOwnerModel');
 const VetDoctor = require('../models/vetDoctormodel');
 
 
