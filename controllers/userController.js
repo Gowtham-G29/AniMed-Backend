@@ -5,6 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const animalOwner = require('../models/animalOwnerModel');
 const Email = require('../utils/email');
+const animalOwner = require('../models/animalOwnerModel');
+const VetDoctor = require('../models/vetDoctormodel');
 
 
 
@@ -132,7 +134,7 @@ exports.getUserDetails = async (req, res, next) => {
             })
         };
         const user = await User.findById(req.user._id);
-        
+
 
 
         return res.status(200).json({
@@ -151,29 +153,75 @@ exports.getUserDetails = async (req, res, next) => {
 };
 
 
-exports.getAnimalOwnerDetails=async(req,res,next)=>{
+exports.getAnimalOwnerDetails = async (req, res, next) => {
     try {
 
-        if(!req.user){
+        if (!req.user) {
             return res.status(401).json({
-                status:'fail',
-                message:'Animal owner Not Found !'
+                status: 'fail',
+                message: 'Animal owner Not Found !'
             })
         };
 
-        const AnimalOwner=await animalOwner.findOne({userID:req.user._id});
+        const AnimalOwner = await animalOwner.findOne({ userID: req.user._id });
         return res.status(200).json({
-            status:'Success',
-            message:'Animal Owner Details',
+            status: 'Success',
+            message: 'Animal Owner Details',
             AnimalOwner
         })
-        
+
     } catch (error) {
         return res.status(500).json({
-            status:'fail',
-            message:error.message
+            status: 'fail',
+            message: error.message
         })
     }
-}
+};
+
+
+exports.getNearbyDoctorsLocation = async (req, res, next) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({
+                status: 'fail',
+                message: 'User not found'
+            });
+        }
+
+        
+        const AnimalOwner = await animalOwner.findOne({ userID: req.user._id });
+        if (!AnimalOwner) {
+            return res.status(403).json({
+                status: 'fail',
+                message: 'No animal owner found for this user'
+            });
+        }
+
+        const { district } = AnimalOwner;
+
+        const doctorsNearby = await VetDoctor.find({ district });
+        if (doctorsNearby.length === 0) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No doctors found in the nearby location'
+            });
+        }
+
+        
+        return res.status(200).json({
+            status: 'success',
+            message: 'Doctors found in the nearby location',
+            data: doctorsNearby
+        });
+    } catch (error) {
+    
+        console.error(error);
+        return res.status(500).json({
+            status: 'fail',
+            message: 'An error occurred while fetching nearby doctors',
+            error: error.message
+        });
+    }
+};
 
 
