@@ -149,7 +149,7 @@ exports.protect = async (req, res, next) => {
         }
 
         //verify the token
-        const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         //check the user still exists
         const currentUser = await User.findById(decoded.id);
         if (!currentUser) {
@@ -161,7 +161,7 @@ exports.protect = async (req, res, next) => {
 
 
         // Check if the user changed the password after the token was issued
-        if (currentUser.passwordChangedAfter && currentUser.passwordChangedAfter(decoded.iat)) {
+        if (currentUser.passwordChangedAt && currentUser.passwordChangedAfter(decoded.iat)) {
             return res.status(401).json({
                 status: 'fail',
                 message: 'User recently changed the password. Please log in again.'
@@ -303,8 +303,8 @@ exports.updateCurrentUserPassword = async (req, res, next) => {
         const cookieOptions = {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
             httpOnly: true,
-            secure: true, // true if in production
-            sameSite: 'None', // Required for cross-origin cookies
+            secure: true, 
+            sameSite: 'None', 
         };
 
         res.cookie('jwt', token, cookieOptions);

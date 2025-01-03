@@ -180,7 +180,7 @@ exports.getAnimalOwnerDetails = async (req, res, next) => {
 
 exports.getNearbyDoctorsLocation = async (req, res, next) => {
     try {
-        // Extract userID from request parameters
+    
         const { userID } = req.query;
         if (!userID) {
             return res.status(400).json({
@@ -189,7 +189,6 @@ exports.getNearbyDoctorsLocation = async (req, res, next) => {
             });
         }
 
-        // Find animal owner by userID
         const AnimalOwner = await animalOwner.findOne({ userID });
         if (!AnimalOwner) {
             return res.status(403).json({
@@ -200,7 +199,6 @@ exports.getNearbyDoctorsLocation = async (req, res, next) => {
 
         const { district } = AnimalOwner;
 
-        // Find doctors in the same district
         const doctorsNearby = await VetDoctor.find({ district });
         if (doctorsNearby.length === 0) {
             return res.status(404).json({
@@ -209,14 +207,13 @@ exports.getNearbyDoctorsLocation = async (req, res, next) => {
             });
         }
 
-        // Return success with doctor locations
         return res.status(200).json({
             status: 'success',
             message: 'Doctors found in the nearby location',
             data: doctorsNearby
         });
     } catch (error) {
-        // Handle server errors
+        
         console.error(error);
         return res.status(500).json({
             status: 'fail',
