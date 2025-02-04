@@ -179,7 +179,7 @@ exports.getNearbyAnimalLocations = async (req, res, next) => {
             });
         }
 
-        const animalowner=await animalOwner.find({district:doctor.district});
+        const animalownersID=await animalOwner.find({district:doctor.district}).select('userID');
 
         res.status(200).json({
             status: 'success',
