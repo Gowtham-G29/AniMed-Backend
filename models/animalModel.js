@@ -153,7 +153,7 @@ const animalSchema = new mongoose.Schema({
         suggestedBy: {
             type: String,
             required: false,
-            default: 'Not yet viewed by doctor !'
+            default: 'Unsolved'
         },
 
     }, animalOwnerViewedStatus: {
