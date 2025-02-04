@@ -188,7 +188,7 @@ exports.getNearbyAnimalLocations = async (req, res, next) => {
         res.status(200).json({
             status: 'success',
             message: 'animalowners',
-            animalownersID:[userID],
+            animalownersID,
             animals
         });
 
