@@ -157,32 +157,37 @@ exports.updateAnimal = async (req, res, next) => {
 };
 
 //for doctors
-exports.getNerbyAnimalLocations=async(req,res,next)=>{
-    try{
+exports.getNearbyAnimalLocations = async (req, res, next) => {
+    try {
+        const doctorUserID = req.user?._id;
 
-        const doctorUserID=req.user._id;
-
-        if(!doctorUserID){
+        if (!doctorUserID) {
             return res.status(404).json({
-                status:'fail',
-                message:'doctor Not found'
-            })
+                status: 'fail',
+                message: 'Doctor not found'
+            });
         }
 
-        const doctor=await VetDoctor.findOne({userID:doctorUserID});
+        // Fetch only the district
+        const doctor = await VetDoctor.findOne({ userID: doctorUserID }).select('district');
+
+        if (!doctor) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Doctor details not found'
+            });
+        }
 
         res.status(200).json({
-            status:'sucess',
-            message:'doctor details',
-            doctor
-        })
- 
-    }catch(error){
+            status: 'success',
+            message: 'Doctor district retrieved successfully',
+            district: doctor.district
+        });
 
+    } catch (error) {
         return res.status(500).json({
-            status:'fail',
-            message:error.message
-        })
-
+            status: 'fail',
+            message: error.message
+        });
     }
-}
+};
