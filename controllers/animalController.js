@@ -3,6 +3,7 @@ const AnimalOwner = require('../models/animalOwnerModel');
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const VetDoctor = require('../models/vetDoctormodel');
+const animalOwner = require('../models/animalOwnerModel');
 
 
 
@@ -178,11 +179,15 @@ exports.getNearbyAnimalLocations = async (req, res, next) => {
             });
         }
 
+        const animalowner=await animalOwner.find({district:doctor.district});
+
         res.status(200).json({
             status: 'success',
             message: 'Doctor district retrieved successfully',
-            district: doctor.district
+            animalowner
         });
+
+
 
     } catch (error) {
         return res.status(500).json({
