@@ -158,7 +158,7 @@ exports.updateAnimal = async (req, res, next) => {
 };
 
 //for doctors
-exports.getNearbyAnimalLocations = async (req, res, next) => {
+exports.getNearbyAnimals = async (req, res, next) => {
     try {
         const doctorUserID = req.user?._id;
 
