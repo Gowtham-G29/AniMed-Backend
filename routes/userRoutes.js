@@ -29,7 +29,7 @@ userRouter.get('/getAnimalOwner',authController.protect,userController.getAnimal
 userRouter.get('/getNearByDoctors', userController.getNearbyDoctorsLocation);
 
 //for doctors
-userRouter.get('/getNerbyAnimalLocations',authController.protect,animalController.getNearbyAnimalLocations);
+userRouter.get('/getNearbyAnimalLocations',authController.protect,animalController.getNearbyAnimalLocations);
 
 
 
