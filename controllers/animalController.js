@@ -2,6 +2,7 @@ const Animal = require('../models/animalModel');
 const AnimalOwner = require('../models/animalOwnerModel');
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
+const VetDoctor = require('../models/vetDoctormodel');
 
 
 
@@ -155,3 +156,33 @@ exports.updateAnimal = async (req, res, next) => {
     }
 };
 
+//for doctors
+exports.getNerbyAnimalLocations=async(req,res,next)=>{
+    try{
+
+        const doctorUserID=req.user._id;
+
+        if(!doctorUserID){
+            return res.status(404).json({
+                status:'fail',
+                message:'doctor Not found'
+            })
+        }
+
+        const doctor=await VetDoctor.findOne({userID:doctorUserID});
+
+        res.status(200).json({
+            status:'sucess',
+            message:'doctor details',
+            doctor
+        })
+ 
+    }catch(error){
+
+        return res.status(500).json({
+            status:'fail',
+            message:error.message
+        })
+
+    }
+}

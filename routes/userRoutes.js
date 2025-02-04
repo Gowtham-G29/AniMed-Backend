@@ -1,6 +1,7 @@
 const express=require('express');
 const userController=require('../controllers/userController');
 const authController=require('../controllers/authController');
+const animalController=require('../controllers/animalController');
 const userRouter=express.Router();
 
 
@@ -26,5 +27,11 @@ userRouter.post('/vetDoctorDetailsRegister',authController.protect,authControlle
 userRouter.get('/getAnimalOwner',authController.protect,userController.getAnimalOwnerDetails);
 
 userRouter.get('/getNearByDoctors', userController.getNearbyDoctorsLocation);
+
+//for doctors
+userRouter.get('/getNerbyAnimalLocations',authController.protect,animalController.getNerbyAnimalLocations);
+
+
+
 
 module.exports=userRouter;
