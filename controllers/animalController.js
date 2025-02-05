@@ -169,7 +169,7 @@ exports.getNearbyAnimals = async (req, res, next) => {
             });
         }
 
-        // Fetch only the district
+        // Fetch vet doctor's district
         const doctor = await VetDoctor.findOne({ userID: doctorUserID }).select('district');
 
         if (!doctor) {
@@ -179,16 +179,28 @@ exports.getNearbyAnimals = async (req, res, next) => {
             });
         }
 
-        const animalownersID=await animalOwner.find({district:doctor.district}).select('userID');
+        // Get all animal owners in the same district
+        const animalOwners = await animalOwner.find({ district: doctor.district }).select('userID');
 
-        const animals=await Animal.find({ownerID:animalownersID.userID});
+        if (!animalOwners.length) {
+            return res.status(200).json({
+                status: 'success',
+                message: 'No animal owners found in this district',
+                animals: []
+            });
+        }
+
+        // Extract user IDs of animal owners
+        const ownerIDs = animalOwners.map(owner => owner.userID);
+
+        // Get animals owned by those owners
+        const animals = await Animal.find({ ownerID: { $in: ownerIDs } });
 
         res.status(200).json({
             status: 'success',
-            message: 'animalowners',
+            message: 'Animals found',
             animals
         });
-
 
     } catch (error) {
         return res.status(500).json({
@@ -197,3 +209,4 @@ exports.getNearbyAnimals = async (req, res, next) => {
         });
     }
 };
+
