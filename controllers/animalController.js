@@ -181,7 +181,7 @@ exports.getNearbyAnimals = async (req, res, next) => {
 
         const animalownersID=await animalOwner.find({district:doctor.district}).select('userID');
 
-        const animals=await Animal.find({userID:animalownersID.userID});
+        const animals=await Animal.find({ownerID:animalownersID.userID});
 
         res.status(200).json({
             status: 'success',
