@@ -168,6 +168,12 @@ const animalSchema = new mongoose.Schema({
         default: false
     },
 
+    curedStatus:{
+        type:Boolean,
+        required:false,
+        default:false
+    },
+
     createdAt: {
         type: Date,
         default: Date.now,
