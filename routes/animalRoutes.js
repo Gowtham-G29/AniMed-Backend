@@ -12,6 +12,6 @@ animalRouter.patch('/updateAnimal', animalController.updateAnimal);
 
 //for doctor side
 
-animalRouter.patch('/updateDoctorSuggetions',animalController.updateDoctorSuggetions);
+animalRouter.patch('/updateDoctorSuggestions',animalController.updateDoctorSuggetions);
 
 module.exports = animalRouter;
