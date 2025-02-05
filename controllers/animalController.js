@@ -157,6 +157,8 @@ exports.updateAnimal = async (req, res, next) => {
     }
 };
 
+
+
 //for doctors
 exports.getNearbyAnimals = async (req, res, next) => {
     try {
@@ -210,3 +212,47 @@ exports.getNearbyAnimals = async (req, res, next) => {
     }
 };
 
+exports.updateDoctorSuggetions=async(req,res,next)=>{
+    try{
+
+        const animalID=req.body.animalID;
+
+        if(!animalID){
+            return res.status(401).json({
+                status:'fail',
+                message:'Animal Not Found'
+            })
+        }
+
+        const updateData = { ...req.body };
+        delete updateData._id; 
+
+        if (Object.keys(updateData).length === 0) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'No fields provided to update'
+            });
+        }
+
+        const animalUpdated = await Animal.findByIdAndUpdate(animalID, updateData,{ $set: updateData }, { new: true });
+
+        if (!animalUpdated) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Animal not found'
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            message: 'Animal updated successfully',
+            animalUpdated
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            status: 'fail',
+            message: error.message
+        });
+    }
+};

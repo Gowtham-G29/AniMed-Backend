@@ -10,4 +10,8 @@ animalRouter.get('/getAnimals', authController.protect, animalController.getAnim
 animalRouter.delete('/deleteAnimal', animalController.deleteAnimal);
 animalRouter.patch('/updateAnimal', animalController.updateAnimal);
 
+//for doctor side
+
+animalRouter.patch('/updateDoctorSuggetions',animalController.updateDoctorSuggetions);
+
 module.exports = animalRouter;
