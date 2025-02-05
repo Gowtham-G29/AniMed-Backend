@@ -223,6 +223,31 @@ exports.getNearbyDoctorsLocation = async (req, res, next) => {
     }
 };
 
+exports.getDoctorDetails = async (req, res, next) => {
+    try {
+
+        if (!req.user) {
+            return res.status(401).json({
+                status: 'fail',
+                message: 'Animal owner Not Found !'
+            })
+        };
+
+        const doctor = await VetDoctor.findOne({ userID: req.user._id });
+        return res.status(200).json({
+            status: 'Success',
+            message: 'Animal Owner Details',
+            doctor
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            status: 'fail',
+            message: error.message
+        })
+    }
+};
+
 
 
 
