@@ -249,6 +249,8 @@ exports.getDoctorDetails = async (req, res, next) => {
     }
 }
 
+
+
 exports.getAnimalOwnerContacts = async (req, res, next) => {
     try {
         const animalID = req.query._id;
@@ -260,7 +262,8 @@ exports.getAnimalOwnerContacts = async (req, res, next) => {
             });
         }
 
-        const animalData = await animal.find({ _id: animalID });
+        // Find the animal
+        const animalData = await animal.findOne({ _id: animalID }).select("ownerID");
 
         if (!animalData) {
             return res.status(404).json({
@@ -269,14 +272,22 @@ exports.getAnimalOwnerContacts = async (req, res, next) => {
             });
         }
 
-        const ownerID=animalData.data.animalData[0].ownerID;
+        const ownerID = animalData.ownerID;
 
-        const ownerContact=await animalOwner.findOne({userID:ownerID});
+        // Find the owner details
+        const ownerContact = await animalOwner.findOne({ userID: ownerID });
+
+        if (!ownerContact) {
+            return res.status(404).json({
+                status: "fail",
+                message: "Owner details not found",
+            });
+        }
 
         res.status(200).json({
             status: "success",
-            message: "Animal owner ID retrieved successfully",
-             ownerContact
+            message: "Animal owner details retrieved successfully",
+            ownerContact,
         });
 
     } catch (error) {
@@ -288,6 +299,7 @@ exports.getAnimalOwnerContacts = async (req, res, next) => {
         });
     }
 };
+
 
 
 
