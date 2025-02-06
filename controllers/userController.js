@@ -272,7 +272,7 @@ exports.getAnimalOwnerContacts = async (req, res, next) => {
         res.status(200).json({
             status: "success",
             message: "Animal owner ID retrieved successfully",
-            ownerID: animalData.ownerID,
+             animalData
         });
 
     } catch (error) {
