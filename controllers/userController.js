@@ -6,6 +6,7 @@ const path = require('path');
 const animalOwner = require('../models/animalOwnerModel');
 const Email = require('../utils/email');
 const VetDoctor = require('../models/vetDoctormodel');
+const animal = require('../models/animalModel');
 
 
 
@@ -247,6 +248,35 @@ exports.getDoctorDetails = async (req, res, next) => {
         })
     }
 };
+
+
+exports.getAnimalOwnerContacts=async(req,res,next)=>{
+    try {
+        const animalID=req.body.animalID;
+
+        if(!animalID){
+            return res.status(404).json({
+                status:'fail',
+                message:'animal Not Found'
+            })
+        }
+
+        const ownerID=await animal.findOne({_id:animalID}).select('ownerID');
+        // const owner=await animalOwner.findOne({})
+
+        res.status(200).json({
+            status:'Success',
+            message:'Animal owner ID ',
+            ownerID
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            status:'fail',
+            message:error.message
+        })
+    }
+}
 
 
 
