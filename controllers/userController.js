@@ -247,36 +247,44 @@ exports.getDoctorDetails = async (req, res, next) => {
             message: error.message
         })
     }
-};
+}
 
-
-exports.getAnimalOwnerContacts=async(req,res,next)=>{
+exports.getAnimalOwnerContacts = async (req, res, next) => {
     try {
-        const animalID=req.query._id;
+        const animalID = req.query._id;
 
-        if(!animalID){
-            return res.status(404).json({
-                status:'fail',
-                message:'animal Not Found'
-            })
+        if (!animalID) {
+            return res.status(400).json({
+                status: "fail",
+                message: "Animal ID is required",
+            });
         }
 
-        const ownerID=await animal.findOne({_id:animalID}).select('ownerID');
-        // const owner=await animalOwner.findOne({})
+        const animalData = await animal.findOne({ _id: animalID }).select("ownerID");
+
+        if (!animalData) {
+            return res.status(404).json({
+                status: "fail",
+                message: "Animal not found",
+            });
+        }
 
         res.status(200).json({
-            status:'Success',
-            message:'Animal owner ID ',
-            ownerID
-        })
-        
+            status: "success",
+            message: "Animal owner ID retrieved successfully",
+            ownerID: animalData.ownerID,
+        });
+
     } catch (error) {
+        console.error("Error fetching animal owner contacts:", error);
         return res.status(500).json({
-            status:'fail',
-            message:error.message
-        })
+            status: "fail",
+            message: "Internal Server Error",
+            error: error.message,
+        });
     }
-}
+};
+
 
 
 
