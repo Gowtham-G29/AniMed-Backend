@@ -260,7 +260,7 @@ exports.getAnimalOwnerContacts = async (req, res, next) => {
             });
         }
 
-        const animalData = await animal.find({ _id: animalID }).select("ownerID");
+        const animalData = await animal.find({ _id: animalID });
 
         if (!animalData) {
             return res.status(404).json({
