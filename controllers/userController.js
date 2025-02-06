@@ -227,14 +227,14 @@ exports.getNearbyDoctorsLocation = async (req, res, next) => {
 exports.getDoctorDetails = async (req, res, next) => {
     try {
 
-        if (!req.user) {
+        if (!req.query._id) {
             return res.status(401).json({
                 status: 'fail',
                 message: 'Animal owner Not Found !'
             })
         };
 
-        const doctor = await VetDoctor.findOne({ userID: req.user._id });
+        const doctor = await VetDoctor.findOne({ userID: req.query._id });
         return res.status(200).json({
             status: 'Success',
             message: 'Animal Owner Details',
