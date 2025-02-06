@@ -269,10 +269,14 @@ exports.getAnimalOwnerContacts = async (req, res, next) => {
             });
         }
 
+        const ownerID=animalData.data.animalData[0].ownerID;
+
+        const ownerContact=await animalOwner.findOne({userID:ownerID});
+
         res.status(200).json({
             status: "success",
             message: "Animal owner ID retrieved successfully",
-             animalData
+             ownerContact
         });
 
     } catch (error) {
