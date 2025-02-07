@@ -300,6 +300,39 @@ exports.getAnimalOwnerContacts = async (req, res, next) => {
     }
 };
 
+exports.getVetDoctorDetails=async(req,res,next)=>{
+    try {
+        if(!req.user._id){
+            return res.status(401).json({
+                status:'fail',
+                message:' user Not found please login and try again!.'
+            })
+        }
+
+        const doctorInformations=await VetDoctor.findOne({userID:req.user._id});
+
+        if(!doctorInformations){
+            return res.status(401).json({
+                status:'fail',
+                message:'veternary doctor not found in this ID'
+            })
+        }
+
+        return res.status(200).json({
+            status:'success',
+            message:'Veternary doctor information successfully retrived!',
+            doctorInformations
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            status:'fail',
+            message:error.message
+        })
+        
+    }
+}
+
 
 
 

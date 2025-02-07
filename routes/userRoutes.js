@@ -32,6 +32,7 @@ userRouter.get('/getNearByDoctors', userController.getNearbyDoctorsLocation);
 userRouter.get('/getNearbyAnimals',authController.protect,animalController.getNearbyAnimals);
 userRouter.get('/getDoctorDetails',authController.protect,userController.getDoctorDetails);
 userRouter.get('/getAnimalOwnerContacts',userController.getAnimalOwnerContacts);
+userRouter.get('/getVetDoctorDetails',authController.protect,userController.getVetDoctorDetails)
 
 
 
