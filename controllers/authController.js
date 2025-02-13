@@ -112,6 +112,40 @@ exports.login = async (req, res, next) => {
 
 
 
+exports.autoLogin = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+
+       return res.status(401).json({
+        status:'fail',
+        error: "No token provided",
+        });
+
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    res.status(200).json({
+         success: 'Success',
+         message:'token verifed',
+         user: decoded 
+    });
+
+  } catch (error) {
+
+    return res.status(403).json({ 
+        status:'Success',
+        message:error.message,
+        error: "Invalid or expired token" 
+    });
+  }
+};
+
+
+
+
 
 
 exports.protect = async (req, res, next) => {
