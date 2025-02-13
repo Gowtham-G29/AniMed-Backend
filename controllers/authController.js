@@ -143,6 +143,35 @@ exports.autoLogin = async (req, res, next) => {
   }
 };
 
+exports.getRole =async(req,res,next)=>{
+    try {
+
+        const userID=req.query._id;
+
+        if(!userID){
+            return res.status(403).json({
+                status:'fail',
+                message:'User ID Not found'
+            })
+        }
+
+        const userRole=await User.findById(userID).select("role");
+
+        res.status(200).json({
+            status:'Success',
+            message:'Role identifed',
+            userRole
+        })
+        
+    } catch (error) {
+        res.status(500).json({
+            status:'fail',
+            message:error.message
+        })
+        
+    }
+}
+
 
 
 
