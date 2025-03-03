@@ -1,10 +1,10 @@
 import express from "express";
 import multer from "multer";
-import { predictDisease } from "../controllers/predictController.js";
+const predictionController=require("../controllers/predictController");
 
 const router = express.Router();
 const upload = multer(); // File upload middleware
 
-router.post('/predict', upload.single("image"), predictDisease);
+router.post('/predict', upload.single("image"), predictionController.predictDisease);
 
 export default predictionRoutes;
