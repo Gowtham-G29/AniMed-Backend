@@ -45,3 +45,9 @@ export const getPredictDisease = async (req, res, next) => {
         res.status(500).json({ error: "Failed to process image" });
     }
 }
+
+
+
+
+module.exports = { getPredictDisease };
+
