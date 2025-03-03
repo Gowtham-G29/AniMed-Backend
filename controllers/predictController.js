@@ -19,9 +19,11 @@ export function getModel() {
     return model;
 }
 
-export async function getPredictDisease(req, res, next) {
+exports.getPredictDisease = async (req, res, next) => {
     if (!req.file) {
-        return res.status(400).json({ error: "No image uploaded" });
+        return res.status(400).json({
+            error: "No image uploaded"
+        });
     }
 
     try {
