@@ -19,8 +19,7 @@ export function getModel() {
     return model;
 }
 
-// Process image and run model inference
-exports.predictDisease = async (req, res, next) => {
+export async function getPredictDisease(req, res, next) {
     if (!req.file) {
         return res.status(400).json({ error: "No image uploaded" });
     }
@@ -34,7 +33,6 @@ exports.predictDisease = async (req, res, next) => {
 
         const imageTensor = tf.node.decodeImage(imageBuffer).expandDims(); // Add batch dimension
 
-
         const output = getModel().predict(imageTensor);
         const prediction = output.dataSync(); // Get output as an array
 
@@ -44,4 +42,4 @@ exports.predictDisease = async (req, res, next) => {
         console.error("Error during prediction:", error);
         res.status(500).json({ error: "Failed to process image" });
     }
-};
+}
