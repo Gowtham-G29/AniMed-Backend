@@ -20,7 +20,7 @@ export function getModel() {
 }
 
 // Process image and run model inference
-export const predictDisease = async (req, res) => {
+exports.predictDisease = async (req, res, next) => {
     if (!req.file) {
         return res.status(400).json({ error: "No image uploaded" });
     }
@@ -28,18 +28,18 @@ export const predictDisease = async (req, res) => {
     try {
         // Convert image to RGB Tensor
         const imageBuffer = await sharp(req.file.buffer)
-            .resize(224, 224) 
+            .resize(224, 224)
             .toFormat("png")
             .toBuffer();
 
         const imageTensor = tf.node.decodeImage(imageBuffer).expandDims(); // Add batch dimension
 
-        
+
         const output = getModel().predict(imageTensor);
         const prediction = output.dataSync(); // Get output as an array
 
         res.json({ prediction });
-        
+
     } catch (error) {
         console.error("Error during prediction:", error);
         res.status(500).json({ error: "Failed to process image" });
