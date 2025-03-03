@@ -7,4 +7,4 @@ const upload = multer(); // File upload middleware
 
 router.post('/predict', upload.single("image"), predictDisease);
 
-export default router;
+export default predictionRoutes;
