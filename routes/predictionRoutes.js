@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-const predictionController = require('../controllers/predictController');
+import predictionController from "../controllers/predictController.js";
 
 
 
