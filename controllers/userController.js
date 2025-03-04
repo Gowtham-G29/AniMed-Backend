@@ -333,6 +333,32 @@ exports.getVetDoctorDetails=async(req,res,next)=>{
     }
 }
 
+exports.approveDoctors=async(req,res,next)=>{
+    try{
+        
+        const doctors=await User.find({role:"Veternarian"});
+        if(!doctors){
+            res.status(403).json({
+                status:'fail',
+                message:'Doctors Not found'
+            })
+        }
+
+        res.status(200).json({
+            status:'Success',
+            message:'Doctors Found Successfully!',
+            doctors
+        })
+
+    }catch(error){
+
+        res.status(500).json({
+            status:'Fail',
+            message:error.message
+        })
+    }
+}
+
 
 
 

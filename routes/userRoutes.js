@@ -41,6 +41,10 @@ userRouter.get('/autoLogin',authController.autoLogin);
 userRouter.get('/getRole',authController.getRole);
 
 
+//Approval
+userRouter.get('/approveDoctors',userController.approveDoctors);
+
+
 
 
 
