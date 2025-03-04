@@ -336,7 +336,7 @@ exports.getVetDoctorDetails=async(req,res,next)=>{
 exports.approveDoctors=async(req,res,next)=>{
     try{
         
-        const doctors = await User.find({ role: "veterinarian" }).select("_id activate");
+        const doctors = await User.find({ role: "veternarian" }).select("_id activate");
 
         if (!doctors || doctors.length === 0) {
             return res.status(403).json({
