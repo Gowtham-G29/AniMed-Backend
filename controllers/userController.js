@@ -357,11 +357,11 @@ exports.approveDoctors=async(req,res,next)=>{
 
     
 
-        res.status(200).json({
-            status:'Success',
-            message:'Doctors Found Successfully!',
-            doctors
-        })
+        // res.status(200).json({
+        //     status:'Success',
+        //     message:'Doctors Found Successfully!',
+        //     doctors
+        // })
 
     }catch(error){
 
