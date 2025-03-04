@@ -336,13 +336,24 @@ exports.getVetDoctorDetails=async(req,res,next)=>{
 exports.approveDoctors=async(req,res,next)=>{
     try{
         
-        const doctors=await User.find({role:"veternarian"}).select("_id activate");
-        if(!doctors){
-            res.status(403).json({
-                status:'fail',
-                message:'Doctors Not found'
-            })
+        const doctors = await User.find({ role: "veterinarian" }).select("_id activate");
+
+        if (!doctors || doctors.length === 0) {
+            return res.status(403).json({
+                status: 'fail',
+                message: 'Doctors Not found'
+            });
         }
+        
+        const doctorIds = doctors.map(doc => doc._id);
+    
+        const doctorDetails = await VetDoctor.find({ userID: { $in: doctorIds } });
+        
+        res.status(200).json({
+            status: 'success',
+            data: doctorDetails
+        });
+        
 
     
 
