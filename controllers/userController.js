@@ -336,7 +336,7 @@ exports.getVetDoctorDetails=async(req,res,next)=>{
 exports.approveDoctors=async(req,res,next)=>{
     try{
         
-        const doctors=await User.find({role:"Veternarian"});
+        const doctors=await User.find({role:"veternarian"});
         if(!doctors){
             res.status(403).json({
                 status:'fail',
