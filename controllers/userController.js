@@ -365,26 +365,38 @@ exports.approveDoctors=async(req,res,next)=>{
     }
 }
 
-exports.activateDoctor = async (req, res, next) => {
-    try {
 
-        if (!req.query._id) {
-            return res.status(401).json({
+exports.activateDoctor = async (req, res) => {
+    try {
+        const { _id } = req.body; 
+
+        if (!_id) {
+            return res.status(400).json({
                 status: 'fail',
-                message: 'You are not logged In.Please log in to delete your Account!'
-            })
+                message: 'Missing doctor ID. Please provide a valid ID to activate the account.'
+            });
         }
 
-        await User.findByIdAndUpdate(req.query._id, { activate: true });
+        const updatedUser = await User.findByIdAndUpdate(_id, { activate: true }, { new: true });
+
+        if (!updatedUser) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Doctor not found. Please check the ID and try again.'
+            });
+        }
+
         res.status(200).json({
-            status: 'Success',
-            message: 'Your Account has been Successfully Deactivated.'
+            status: 'success',
+            message: 'Doctor account has been successfully activated.',
+            user: updatedUser
         });
 
     } catch (error) {
+        console.error("Error activating doctor:", error);
         res.status(500).json({
-            status: 'Fail',
-            message: 'Something went wrong while deactivating your account'
+            status: 'fail',
+            message: 'Something went wrong while activating the doctor account.'
         });
     }
 };
