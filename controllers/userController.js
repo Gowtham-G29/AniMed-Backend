@@ -181,7 +181,7 @@ exports.getAnimalOwnerDetails = async (req, res, next) => {
 
 exports.getNearbyDoctorsLocation = async (req, res, next) => {
     try {
-    
+
         const { userID } = req.query;
         if (!userID) {
             return res.status(400).json({
@@ -214,7 +214,7 @@ exports.getNearbyDoctorsLocation = async (req, res, next) => {
             data: doctorsNearby
         });
     } catch (error) {
-        
+
         console.error(error);
         return res.status(500).json({
             status: 'fail',
@@ -300,42 +300,42 @@ exports.getAnimalOwnerContacts = async (req, res, next) => {
     }
 };
 
-exports.getVetDoctorDetails=async(req,res,next)=>{
+exports.getVetDoctorDetails = async (req, res, next) => {
     try {
-        if(!req.user._id){
+        if (!req.user._id) {
             return res.status(401).json({
-                status:'fail',
-                message:' user Not found please login and try again!.'
+                status: 'fail',
+                message: ' user Not found please login and try again!.'
             })
         }
 
-        const doctorInformations=await VetDoctor.findOne({userID:req.user._id});
+        const doctorInformations = await VetDoctor.findOne({ userID: req.user._id });
 
-        if(!doctorInformations){
+        if (!doctorInformations) {
             return res.status(401).json({
-                status:'fail',
-                message:'veternary doctor not found in this ID'
+                status: 'fail',
+                message: 'veternary doctor not found in this ID'
             })
         }
 
         return res.status(200).json({
-            status:'success',
-            message:'Veternary doctor information successfully retrived!',
+            status: 'success',
+            message: 'Veternary doctor information successfully retrived!',
             doctorInformations
         })
-        
+
     } catch (error) {
         return res.status(500).json({
-            status:'fail',
-            message:error.message
+            status: 'fail',
+            message: error.message
         })
-        
+
     }
 }
 
-exports.approveDoctors=async(req,res,next)=>{
-    try{
-        
+exports.approveDoctors = async (req, res, next) => {
+    try {
+
         const doctors = await User.find({ role: "veternarian" }).select("_id activate");
 
         if (!doctors || doctors.length === 0) {
@@ -344,23 +344,23 @@ exports.approveDoctors=async(req,res,next)=>{
                 message: 'Doctors Not found'
             });
         }
-        
+
         const doctorIds = doctors.map(doc => doc._id);
-    
+
         const doctorDetails = await VetDoctor.find({ userID: { $in: doctorIds } });
-        
+
         res.status(200).json({
             status: 'success',
-             doctors,
-             doctorDetails
+            doctors,
+            doctorDetails
         });
-        
 
-    }catch(error){
+
+    } catch (error) {
 
         res.status(500).json({
-            status:'Fail',
-            message:error.message
+            status: 'Fail',
+            message: error.message
         })
     }
 }
@@ -368,7 +368,7 @@ exports.approveDoctors=async(req,res,next)=>{
 
 exports.activateDoctor = async (req, res) => {
     try {
-        const { _id } = req.body; 
+        const { _id } = req.body;
 
         if (!_id) {
             return res.status(400).json({
