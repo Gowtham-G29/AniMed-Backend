@@ -43,6 +43,7 @@ userRouter.get('/getRole',authController.getRole);
 
 //Approval
 userRouter.get('/approveDoctors',userController.approveDoctors);
+userRouter.patch('/activateDoctor',userController.activateDoctor);
 
 
 

@@ -365,6 +365,30 @@ exports.approveDoctors=async(req,res,next)=>{
     }
 }
 
+exports.activateDoctor = async (req, res, next) => {
+    try {
+
+        if (!req.query._id) {
+            return res.status(401).json({
+                status: 'fail',
+                message: 'You are not logged In.Please log in to delete your Account!'
+            })
+        }
+
+        await User.findByIdAndUpdate(req.query._id, { activate: true });
+        res.status(200).json({
+            status: 'Success',
+            message: 'Your Account has been Successfully Deactivated.'
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'Fail',
+            message: 'Something went wrong while deactivating your account'
+        });
+    }
+};
+
 
 
 
