@@ -8,7 +8,7 @@ exports.updateDiseaseInformations=async(req,res,next)=>{
         const diseaseFound=await diseaseInformation.findOne({diseaseName:Name});
 
         if(diseaseFound){
-            res.status(403).json({
+            res.status(404).json({
                 status:'fail',
                 message:'Try for another disease',
                 diseaseFound
