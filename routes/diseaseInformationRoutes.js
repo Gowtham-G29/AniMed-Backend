@@ -3,7 +3,7 @@ const diseaseInformationController=require('../controllers/diseaseInformationCon
 
 const diseaseInformationRouter=express.Router();
 
-diseaseInformationRouter.get('/diseaseInformation',diseaseInformationController.updateDiseaseInformations);
+diseaseInformationRouter.get('/updateDiseaseInformation',diseaseInformationController.updateDiseaseInformations);
 
 
 module.exports=diseaseInformationRouter;
