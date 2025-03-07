@@ -14,7 +14,8 @@ const app = express();
 
 //Router mount
 const userRouter = require('./routes/userRoutes');
-const animalRouter=require('./routes/animalRoutes');
+const animalRouter = require('./routes/animalRoutes');
+const diseaseInformationRouter = require('./routes/diseaseInformationRoutes')
 
 if (process.env.NODE_ENV == 'development') {
     app.use(morgan('dev'));
@@ -62,7 +63,8 @@ app.use(express.static(`${__dirname}/public`));
 
 //use the route as middlewares
 app.use('/api/v1/users', userRouter);
-app.use('/api/v1/animals',animalRouter);
+app.use('/api/v1/animals', animalRouter);
+app.use('/api/v1/diseaseInformation', diseaseInformationRouter);
 
 
 
