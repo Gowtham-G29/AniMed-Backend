@@ -11,7 +11,6 @@ exports.updateDiseaseInformations = async (req, res, next) => {
             return res.status(404).json({
                 status: 'fail',
                 message: 'Try for another disease',
-                diseaseFound
             })
         }
 
