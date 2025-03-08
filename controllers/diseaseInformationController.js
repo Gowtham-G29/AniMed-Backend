@@ -22,7 +22,7 @@ exports.updateDiseaseInformations = async (req, res, next) => {
             })
         };
 
-        const updatedInformation = await diseaseInformation.create(req.body);
+        const updatedInformation = await DiseaseInformation.create(req.body);
         return res.status(201).json({
             status: 'Success',
             message: `The information for the ${data.diseaseName} disease is created Successfully`,
