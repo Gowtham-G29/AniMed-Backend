@@ -41,7 +41,7 @@ exports.updateDiseaseInformations = async (req, res, next) => {
 exports.getDiseaseInfo=async(req,res,next)=>{
     try {
 
-        const disease=req.body.diseaseName;
+        const disease=req.query.diseaseName;
 
         if(!disease){
             return res.status(403).json({
