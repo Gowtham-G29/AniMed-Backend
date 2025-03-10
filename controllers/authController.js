@@ -16,20 +16,21 @@ const signToken = (id) => {
 
 exports.signUp = async (req, res, next) => {
     try {
-
-        if (!req.body) {
+       
+        if(!req.body){
             return res.status(403).json({
-                status: 'fail',
-                message: 'Register values Not found'
+                status:'fail',
+                message:'Register values Not found'
             })
         }
 
-        const emailAddress = req.body.email;
-        const isExistedUser = await User.findOne({ email: emailAddress });
-        if (isExistedUser) {
+        const emailAddress=req.body.email;
+
+        const isExistedUser=await User.findOne({email:emailAddress});
+        if(isExistedUser){
             return res.status(403).json({
-                status: 'fail',
-                message: 'User Already Registered'
+                 status:'fail',
+                 message:'User Already Registered'
             })
         }
 
@@ -130,62 +131,62 @@ exports.login = async (req, res, next) => {
 
 
 exports.autoLogin = async (req, res, next) => {
-    try {
-        const token = req.headers.authorization?.split(" ")[1];
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
 
-        if (!token) {
+    if (!token) {
 
-            return res.status(401).json({
-                status: 'fail',
-                error: "No token provided",
-            });
-
-        }
-
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-        res.status(200).json({
-            success: 'Success',
-            message: 'token verifed',
-            user: decoded
+       return res.status(401).json({
+        status:'fail',
+        error: "No token provided",
         });
 
-    } catch (error) {
-
-        return res.status(403).json({
-            status: 'Success',
-            message: error.message,
-            error: "Invalid or expired token"
-        });
     }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    res.status(200).json({
+         success: 'Success',
+         message:'token verifed',
+         user: decoded 
+    });
+
+  } catch (error) {
+
+    return res.status(403).json({ 
+        status:'Success',
+        message:error.message,
+        error: "Invalid or expired token" 
+    });
+  }
 };
 
-exports.getRole = async (req, res, next) => {
+exports.getRole =async(req,res,next)=>{
     try {
 
-        const userID = req.query._id;
+        const userID=req.query._id;
 
-        if (!userID) {
+        if(!userID){
             return res.status(403).json({
-                status: 'fail',
-                message: 'User ID Not found'
+                status:'fail',
+                message:'User ID Not found'
             })
         }
 
-        const userRole = await User.findById(userID).select("role");
+        const userRole=await User.findById(userID).select("role");
 
         res.status(200).json({
-            status: 'Success',
-            message: 'Role identifed',
+            status:'Success',
+            message:'Role identifed',
             userRole
         })
-
+        
     } catch (error) {
         res.status(500).json({
-            status: 'fail',
-            message: error.message
+            status:'fail',
+            message:error.message
         })
-
+        
     }
 }
 
