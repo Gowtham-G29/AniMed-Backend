@@ -38,7 +38,7 @@ userRouter.get('/getVetDoctorDetails',authController.protect,userController.getV
 
 
 userRouter.get('/autoLogin',authController.autoLogin);
-userRouter.get('/getRole',authController.getRole);
+userRouter.get('/getRole',authController.getUserState);
 
 
 //Approval

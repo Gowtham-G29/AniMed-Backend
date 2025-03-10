@@ -27,6 +27,7 @@ exports.signUp = async (req, res, next) => {
         const emailAddress=req.body.email;
 
         const isExistedUser=await User.findOne({email:emailAddress});
+        
         if(isExistedUser){
             return res.status(403).json({
                  status:'fail',
@@ -34,7 +35,7 @@ exports.signUp = async (req, res, next) => {
             })
         }
 
-        
+
         const newUser = await User.create(req.body);
         // const url = `${req.protocol}://${req.get('host')}/`;
         // await new Email(newUser, url).sendWelcome();
@@ -162,7 +163,7 @@ exports.autoLogin = async (req, res, next) => {
   }
 };
 
-exports.getRole =async(req,res,next)=>{
+exports.getUserState =async(req,res,next)=>{
     try {
 
         const userID=req.query._id;
@@ -174,12 +175,12 @@ exports.getRole =async(req,res,next)=>{
             })
         }
 
-        const userRole=await User.findById(userID).select("role");
+        const userState=await User.findById(userID).select("role activate");
 
         res.status(200).json({
             status:'Success',
             message:'Role identifed',
-            userRole
+            userState
         })
         
     } catch (error) {
