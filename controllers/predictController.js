@@ -1,8 +1,8 @@
-import { node } from "@tensorflow/tfjs-node";
+import * as tf from "@tensorflow/tfjs";
 import { getModel } from "../models/modelLoader";
 
 const processImage = async (buffer) => {
-    const tensor = node
+    const tensor = tf
         .decodeImage(buffer)
         .resizeNearestNeighbor([224, 224])
         .expandDims()
