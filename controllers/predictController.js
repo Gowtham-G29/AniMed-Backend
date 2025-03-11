@@ -1,17 +1,17 @@
-import * as tf from "@tensorflow/tfjs";
-import { getModel } from "../models/modelLoader.js"; // ✅ Correct ESM import
+const tf = require("@tensorflow/tfjs");
+const { getModel } = require("../models/modelLoader"); // ✅ Use require() for CommonJS
 
 const processImage = async (buffer) => {
     const tensor = tf.node.decodeImage(buffer)  // ✅ Use tf.node for decoding images
-        .resizeBilinear([224, 224])  // ✅ Correct function for resizing
-        .expandDims(0)  // ✅ Ensure batch dimension
+        .resizeBilinear([224, 224])  // ✅ Resize to 224x224
+        .expandDims(0)  // ✅ Add batch dimension
         .toFloat()
         .div(tf.scalar(255.0));  // ✅ Normalize
 
     return tensor;
 };
 
-export async function predictDisease(req, res) {
+exports.predictDisease = async (req, res,next) => {  // ✅ Use `exports.predicts`
     const model = getModel();
     if (!model) return res.status(500).json({ error: "Model not loaded yet" });
 
@@ -27,4 +27,4 @@ export async function predictDisease(req, res) {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-}
+};

@@ -19,8 +19,7 @@ const app = express();
 const userRouter = require('./routes/userRoutes');
 const animalRouter = require('./routes/animalRoutes');
 const diseaseInformationRouter = require('./routes/diseaseInformationRoutes');
-import predictRouter from "./routes/predictRoutes.js";
-
+const predictRouter = require("./routes/predictRoutes");
 if (process.env.NODE_ENV == 'development') {
     app.use(morgan('dev'));
 }

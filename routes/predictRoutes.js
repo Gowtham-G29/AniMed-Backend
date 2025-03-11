@@ -1,11 +1,10 @@
-import express from "express";
-import multer from "multer";
-import { predictDisease } from "../controllers/predictController.js";  // ✅ Correct ESM import
+const express = require("express");
+const multer = require("multer");
+const { predictDisease } = require("../controllers/predictController");
 
-const predictRouter = express.Router();
-
+const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-predictRouter.post("/predict", upload.single("image"), predictDisease);
+router.post("/predict", upload.single("image"), predictDisease);
 
-export default predictRouter; // ✅ Correct ES Module export
+module.exports = router;  // ✅ Correct CommonJS export
