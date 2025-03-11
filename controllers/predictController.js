@@ -1,13 +1,13 @@
 import * as tf from "@tensorflow/tfjs";
-const { getModel } = require("../models/modelLoader");  
+import { getModel } from "../models/modelLoader.js"; // ✅ Correct ESM import
 
 const processImage = async (buffer) => {
-    const tensor = tf
-        .decodeImage(buffer)
-        .resizeNearestNeighbor([224, 224])
-        .expandDims()
+    const tensor = tf.node.decodeImage(buffer)  // ✅ Use tf.node for decoding images
+        .resizeBilinear([224, 224])  // ✅ Correct function for resizing
+        .expandDims(0)  // ✅ Ensure batch dimension
         .toFloat()
-        .div(255.0);
+        .div(tf.scalar(255.0));  // ✅ Normalize
+
     return tensor;
 };
 
@@ -23,13 +23,8 @@ export async function predictDisease(req, res) {
         const diseases = ["Lumpy Skin Disease", "Ringworm", "Mange", "Foot-and-Mouth"];
         const predictedDisease = diseases[scores[0].indexOf(Math.max(...scores[0]))];
 
-        res.json({
-            prediction:
-                predictedDisease
-        });
+        res.json({ prediction: predictedDisease });
     } catch (error) {
-        res.status(500).json({
-            error: error.message
-        });
+        res.status(500).json({ error: error.message });
     }
 }
