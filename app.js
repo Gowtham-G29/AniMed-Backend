@@ -8,7 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const compression = require('compression');
 const path = require('path');
-const { loadModel } = require("./models/modelLoader");
+const { loadModel } = require("./utils/modelLoader");
 
 const app = express();
 
