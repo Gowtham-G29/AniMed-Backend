@@ -7,4 +7,4 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 predictRouter.post("/predict", upload.single("image"), predictDisease);
 
-module.exports= predictRouter; // ✅ Correct ES Module export
+export default predictRouter; // ✅ Correct ES Module export
