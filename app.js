@@ -8,18 +8,17 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const compression = require('compression');
 const path = require('path');
-// const { loadModel } = require("./models/modelLoader");
+
 
 
 const app = express();
 
-// await loadModel();
 
 //Router mount
 const userRouter = require('./routes/userRoutes');
 const animalRouter = require('./routes/animalRoutes');
 const diseaseInformationRouter = require('./routes/diseaseInformationRoutes');
-const predictRouter = require("./routes/predictRoutes");
+
 if (process.env.NODE_ENV == 'development') {
     app.use(morgan('dev'));
 }
@@ -68,7 +67,7 @@ app.use(express.static(`${__dirname}/public`));
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/animals', animalRouter);
 app.use('/api/v1/diseaseInformation', diseaseInformationRouter);
-app.use('/api/v1/predict', predictRouter);
+
 
 
 
