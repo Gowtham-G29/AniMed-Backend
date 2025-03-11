@@ -8,11 +8,13 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const compression = require('compression');
 const path = require('path');
-const { loadModel } = require("./models/modelLoader");
+import { loadModel } from "./models/modelLoader.js";
+
+
 
 const app = express();
 
-loadModel();
+await loadModel();
 
 //Router mount
 const userRouter = require('./routes/userRoutes');
