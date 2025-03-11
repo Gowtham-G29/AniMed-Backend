@@ -1,5 +1,5 @@
 import * as tf from "@tensorflow/tfjs";
-import { getModel } from "../models/modelLoader";
+const { getModel } = require("../models/modelLoader");  
 
 const processImage = async (buffer) => {
     const tensor = tf
