@@ -12,5 +12,6 @@ const loadModel = async () => {
 };
 
 const getModel = () => model;
+loadModel();
 
 export default { loadModel, getModel };
