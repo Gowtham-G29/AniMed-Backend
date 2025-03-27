@@ -30,7 +30,7 @@ app.use(express.json());
 app.use('/public', express.static(path.join(__dirname, '../public')));
 
 const corsOptions = {
-    origin: ['http://localhost:5173', 'https://chic-chebakia-065706.netlify.app','https://67e589213829d41ee581b3b5--rainbow-seahorse-3a7d28.netlify.app'], 
+    origin: ['http://localhost:5173','https://67e5a5e11677281679b775bc--lively-daffodil-2fd27d.netlify.app',], 
     credentials: true, // Allow cookies to be sent with requests
 };
 
